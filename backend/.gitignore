@@ -1,0 +1,11 @@
+env
+itady
+venv
+migrations
+.env
+*.log
+*.pot
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class

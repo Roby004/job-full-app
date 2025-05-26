@@ -1,0 +1,30 @@
+from models.database import db
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+
+
+class Candidat(db.Model):
+    __tablename__ = 'candidat'
+
+    id = db.Column(db.Integer, primary_key=True)
+    fullname = db.Column(db.String(150), nullable=False)
+    resume = db.Column(db.String(300))  # lien vers le CV
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+
+    skills = db.relationship('CandidateSkills', backref='candidate', lazy=True)
+    applications = db.relationship('Application', backref='candidate', lazy=True)
+    
+    
+    def __init__(self, fullname, resume, user_id):
+        self.fullname = fullname
+        self.resume = resume
+        self.user_id = user_id
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'fullname': self.fullname,
+            'user_id': self.user_id,
+            'skills': [skill.serialize() for skill in self.skills],
+            'applications': [app.id for app in self.applications]
+        }
