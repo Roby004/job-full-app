@@ -1,18 +1,21 @@
+
+from datetime import datetime
 from flask import jsonify
 from models.application import Application
 from models.candidat import Candidat
 from models.database import db
 
 # Create an Application
-def create_application(data):
+def create_application(data , user_id):
     if not data.get('name'):
         return jsonify({"error": "Application name is required"}), 400 
+    candidat = Candidat.query.filter_by(user_id=user_id).first()
 
     new_application = Application(
-        candidate_id=data.get('candidate_id'),
+         candidate_id=candidat.id,
         job_offer_id=data.get('job_offer_id'),
         status=data.get('status'),
-        applied_at=data.get('applied_at'),
+         applied_at=datetime.utcnow(),
     )
       
     db.session.add(new_application)

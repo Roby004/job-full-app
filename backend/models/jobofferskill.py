@@ -20,5 +20,7 @@ class OfferSkill(db.Model):
         return {
             'id': self.id,
             'job_offer_id': self.job_offer_id,
-            'skill_id' : self.skill_id
+            'skill_id' : self.skill_id,
+              'skill_id': self.skill_id,
+        'name': self.skill.name if self.skill else None
         }

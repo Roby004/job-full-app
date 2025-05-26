@@ -47,4 +47,11 @@ class Offer(db.Model):
             'statut_offre': self.statut_offre,
             'category': self.category,
             'type_offre': self.type_offre,
+            'skills_required': [
+                    {
+                        'id': s.skill.id,
+                        'name': s.skill.name
+                    } for s in self.skills_required if s.skill is not None
+                ]
         }
+    

@@ -26,13 +26,14 @@ def add_site_to_application(agent_id):
 
 # Route: Create a new application or list all applications
 @application_bp.route('/application', methods=['POST', 'GET'])
-#@token_required
-def new_applicationt():
+@token_required
+def new_applicationt(current_user):
     if request.method == 'POST':
         data = request.json
         if not data.get('name'):
             return jsonify({"error": "Le nom de l'application est requis"}), 400
-        return application_services.create_application(data)
+        #return application_services.create_application(data)
+        return application_services.create_application(data, current_user.id)
     elif request.method == 'GET':
         return application_services.list()
 
