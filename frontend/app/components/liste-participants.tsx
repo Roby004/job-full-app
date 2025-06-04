@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../css/listParticipant.css';
+import Diversity2OutlinedIcon from '@mui/icons-material/Diversity2Outlined';
 
 interface Participant {
   name: string;
@@ -65,7 +66,7 @@ const ListParticipant: React.FC = () => {
                   <h4 style={{fontWeight : 600 , }}>{user.name}</h4>
                   <p style={{fontSize : '13px', color : 'darkgray'}}>{user.email}</p>
                 </div>
-                <button className="profile-button">Big Five Profile</button>
+                <button  className="profile-button">Big Five Profile</button>
                 <span className="job-title">Recrutement Chef de projet</span>
               </li>
             ))

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import NavbarRecrut from '../components/navbar-recrut';
+import { Box, Typography } from '@mui/material';
+import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
+import FreeCancellationRoundedIcon from '@mui/icons-material/FreeCancellationRounded';
 
 interface Participant {
   id: number;
@@ -175,10 +178,10 @@ useEffect(() => {
             {/* Filters */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
-                <button className="bg-white border text-sm px-4 py-2 rounded-lg text-gray-700">
+                <button className="bg-white border border-[#e0e0e0] text-sm px-4 py-2 rounded-lg text-gray-700">
                   Quick Reporting
                 </button>
-                <button className="bg-white border text-sm px-4 py-2 rounded-lg text-gray-700">
+                <button className="bg-white border border-[#e0e0e0] text-sm px-4 py-2 rounded-lg text-gray-700">
                   Filtres
                   <span className="ml-2 bg-purple-600 text-white px-2 py-0.5 rounded-full text-xs">
                     5
@@ -188,7 +191,7 @@ useEffect(() => {
               <input
                 type="text"
                 placeholder="Rechercher un candidat..."
-                className="border px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-purple-500"
+                className="border border-[#e0e0e0] bg-white px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-purple-500"
               />
             </div>
 
@@ -283,27 +286,77 @@ useEffect(() => {
       <div className="flex flex-row sm:flex-col  justify-between mb-4" style = {{display: 'flex', flexDirection: 'row'}}>
             <h2 className="text-2xl font-semibold text-gray-800 mb-2">{offer.title} </h2>
 
-        <button className=" w- 100 ml-2 text-sm bg-green-100 text-green-700 px-2 py-0.5 rounded-xl">
-              Fermer l'offre
+        <div className="flex flex-row  items-center justify-between mt-2">
+           <button className=" ml-2 text-sm  px-4 py-2 rounded-xl" style={{
+            fontSize: '14px',
+            background: 'linear-gradient(273.65deg, #7547DA 1.4%, #1B0939 113.96%), linear-gradient(274.98deg, #7547DA 38.27%, #68E1FD 121.18%)',
+            color: 'white',
+            }}>
+              <FreeCancellationRoundedIcon className="mr-1" />Fermer l'offre
+            
             </button>
+            <button className=" w- 100 ml-2 text-sm  border boder-purple-700  px-2 py-2 rounded-xl">
+                <BorderColorRoundedIcon className="mr-1" />
+              Modifier l'offre
+            </button> 
+        </div>
+       
       </div>
     <p className="text-sm text-gray-500 mb-2">{offer.company?.name} · {offer.location}</p>
     <div className="text-gray-700 leading-relaxed text-sm mb-4 whitespace-pre-line">
       {offer.description}
     </div>
+    <div className="text-gray-700 leading-relaxed text-sm mb-4 whitespace-pre-line">
+      <p>Compétences requises</p>
+      {offer.competences_requises}
+    </div>
+     <Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1 }}>
+              <Typography variant="body2">Télétravail ou présentiel</Typography>
+              <Typography variant="body2">{offer.mode_travail}</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1 }}>
+              <Typography variant="body2">Type de contrat</Typography>
+              <Typography variant="body2">{offer.type_offre}</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1 }}>
+              <Typography variant="body2">Fourchette de salaire</Typography>
+              <Typography variant="body2">
+                {offer.salaire} Ar
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1 }}>
+              <Typography variant="body2">Catégorie</Typography>
+              <Typography variant="body2">{offer.category}</Typography>
+            </Box>
+          </Box>
+    
+          
 
     <div>
       <h3 className="text-md font-semibold text-gray-800 mb-2">Compétences requises</h3>
-      <div className="flex flex-wrap gap-3">
-        {offer.skills?.map((skill: string, index: number) => (
-          <span
-            key={index}
-            className="border border-gray-300 bg-gray-50 text-gray-700 text-xs px-3 py-1 rounded-full shadow-sm hover:shadow-md transition"
-          >
-            {skill}
-          </span>
-        ))}
-      </div>
+     <div className="flex flex-wrap gap-3">
+  {offer.skills_required?.map((skill: { id: number; name: string }, index: number) => (
+    <span
+      key={skill.id || index}
+      className="bg-[#fff1cc] text-[#c79202] px-3 py-1 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition"
+    >
+      {skill.name}
+    </span>
+  ))}
+</div>
+<Box sx={{ mt: 3 }}>
+            <Typography variant="subtitle2" gutterBottom>
+              Documents requis
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              {['CV', 'Lettre de motivation', 'Profil LinkedIn'].map((doc) => (
+                <span key={doc} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-xs">
+                  {doc}
+                </span>
+              ))}
+            </Box>
+          </Box>
     </div>
   </div>
 )}

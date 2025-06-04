@@ -1,4 +1,5 @@
 from models.database import db
+
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -10,9 +11,11 @@ class Candidat(db.Model):
     fullname = db.Column(db.String(150), nullable=False)
     resume = db.Column(db.String(300))  # lien vers le CV
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
 
     skills = db.relationship('CandidateSkills', backref='candidate', lazy=True)
     applications = db.relationship('Application', backref='candidate', lazy=True)
+    experiences = db.relationship('UserExperience', backref='candidat', lazy=True)
     
     
     def __init__(self, fullname, resume, user_id):
@@ -25,6 +28,12 @@ class Candidat(db.Model):
             'id': self.id,
             'fullname': self.fullname,
             'user_id': self.user_id,
-            'skills': [skill.serialize() for skill in self.skills],
-            'applications': [app.id for app in self.applications]
+          
+             'skills': [
+                {
+                    'id': s.skill.id,
+                    'name': s.skill.name
+                } for s in self.skills if s.skill is not None],
+            'applications': [app.id for app in self.applications],
+            'experiences': [exp.serialize() for exp in self.experiences],
         }

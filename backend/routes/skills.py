@@ -7,14 +7,14 @@ skills_bp = Blueprint('skills', __name__)
 # Route: Create a new skills or list all skillss
 @skills_bp.route('/skills', methods=['POST', 'GET'])
 @token_required
-def new_skills():
+def new_skills(current_user):
     if request.method == 'POST':
         data = request.json
         if not data.get('name'):
             return jsonify({"error": "Le nom du skills est requis"}), 400
         return skills_services.create_skills(data)
     elif request.method == 'GET':
-        return skills_services.list()
+        return skills_services.get_all_skills()
 
 # Route: Get, update, or delete a skills
 @skills_bp.route('/skills/<string:skills_id>', methods=['GET', 'PUT', 'DELETE'])

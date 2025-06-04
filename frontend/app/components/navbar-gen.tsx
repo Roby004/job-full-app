@@ -1,6 +1,6 @@
 
 import logoLight from "../welcome/logo-light.svg"
-import LogoIcon from '../images/logo-icon.png';
+import LogoIcon from '../images/logo-icon2.png';
 
 import { NavLink } from "react-router";
 import { Typography } from "@mui/material";

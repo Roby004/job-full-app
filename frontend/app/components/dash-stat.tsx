@@ -1,5 +1,10 @@
 import React, { type JSX } from 'react';
 import '../css/dashstat_style.css';
+import partIcon from '../images/Participants.png';
+import expressIcon from '../images/Express.png';
+import recrutementIcon from '../images/Recrutement.png';
+import developpementIcon from '../images/Développement.png';
+
 
 // Material UI Icons
 import GroupIcon from '@mui/icons-material/Group';
@@ -11,10 +16,10 @@ import BuildIcon from '@mui/icons-material/Build';
 type StatLabel = 'Participants' | 'Express' | 'Recrutement' | 'Développement';
 
 const iconMap: Record<StatLabel, JSX.Element> = {
-  Participants: <GroupIcon fontSize="large" color="primary" />,
-  Express: <FlashOnIcon fontSize="large" color="primary" />,
-  Recrutement: <WorkIcon fontSize="large" color="primary" />,
-  Développement: <BuildIcon fontSize="large" color="primary" />,
+  Participants: <img src={partIcon} style = {{}} color="primary" />,
+  Express: <img src={expressIcon} style = {{}} color="primary" />,
+  Recrutement: <img src={recrutementIcon} style = {{}} color="primary" />,
+  Développement: <img src={developpementIcon} style = {{}} color="primary" />,
 };
 
 function DashStat() {

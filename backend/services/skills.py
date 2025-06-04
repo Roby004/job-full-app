@@ -55,3 +55,8 @@ def get_skills(id):
         return jsonify({"status": "error", "message": "Skills not found"}), 404
     return jsonify(skills.serialize()), 200
 
+def get_all_skills():
+    skills = Skills.query.all()
+    if not skills:
+        return jsonify({"status": "error", "message": "No skills found"}), 404
+    return jsonify([skill.serialize() for skill in skills]), 200

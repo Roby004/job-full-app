@@ -6,7 +6,7 @@ import {
   InputAdornment, InputLabel, OutlinedInput, FormControlLabel
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -41,6 +41,7 @@ export default function SignIn() {
       });
 
       const userData = await userRes.json();
+      console.log("User data:", userData);
 // Rediriger based on user role
       if (userRes.ok && userData?.data?.role) {
         const role = userData.data.role;
@@ -69,7 +70,7 @@ export default function SignIn() {
       <div className="layout flex flex-col items-center justify-center pt-16 pb-4 px-20">
         <div className="w-100 items-center justify-center">
           <h1 className="text-3xl font-bold text-center">Content de vous revoir !</h1>
-          <p className="label-simple">Veuillez saisir vos informations pour accéder à votre compte Key Predict.</p>
+          <p className="label-simple">Veuillez saisir vos informations pour accéder à votre compte e-tady.</p>
         </div>
 
         <div className="input-forms">
@@ -115,7 +116,7 @@ export default function SignIn() {
                 sx={{ gap: "8px", marginLeft: "4px", alignItems: "center" }}
               />
               <NavLink to={"/auth/forgotmdp"} className="label">
-                <p className="link" style={{ color: "purple", fontWeight: "600" }}>
+                <p className="link" style={{ color: "#023047", fontWeight: "600" }}>
                   Mot de passe oublié ?
                 </p>
               </NavLink>
@@ -130,7 +131,7 @@ export default function SignIn() {
         <div className="inscription">
           <p>Besoin d'un compte Key predict ?</p>
           <NavLink to={"/auth/signup"} className="label">
-            <p className="link" style={{ color: "purple", fontWeight: 600 }}>Inscrivez-vous</p>
+            <p className="link" style={{ color: "#023047", fontWeight: 600 }}>Inscrivez-vous</p>
           </NavLink>
         </div>
         </div>

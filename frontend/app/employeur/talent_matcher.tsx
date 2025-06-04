@@ -7,6 +7,9 @@ import { useNavigate } from 'react-router-dom';
 
 
 import { useEffect, useState } from "react";
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import axios from 'axios';
+import { Link } from 'react-router';
 
 
 interface Offer {
@@ -32,36 +35,51 @@ export default function TalentMatcherPage() {
   };
 
   useEffect(() => {
-    const fetchOffers = async () => {
-      const token = localStorage.getItem("token");
+  const fetchOffers = async () => {
+    const token = localStorage.getItem("token");
     try {
-      const response = await fetch("http://localhost:5000/offer/my-offers", {
+      const response = await axios.get("http://localhost:5000/offer/my-offers", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
       });
-        const result = await response.json();;
-        if (result.status === "success") {
-          console.log("Offers fetched successfully res:", result);
-          setOffers(result.offers);
-        } else {
-          console.error("Failed to fetch offers:", result.message);
-        }
-      } catch (err) {
-        console.error("Error:", err);
+
+      const result = response.data; // Axios parse déjà en JSON
+
+      if (result.status === "success") {
+        console.log("Offers fetched successfully:", result);
+        setOffers(result.offers);
+      } else {
+        console.error("Failed to fetch offers:", result.message);
       }
-    };
-    fetchOffers();
-  }, []);
+    } catch (err) {
+      console.error("Error fetching offers:", err);
+    }
+  };
+
+  fetchOffers();
+}, []);
 
   return (
     <div className="bg-[#f6f8f9] min-h-screen px-10 py-6 font-sans">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-semibold">Liste de vos campagnes</h1>
-        <button className="flex items-center bg-white border border-purple-500 text-purple-600 px-4 py-2 rounded-lg hover:bg-purple-50 text-sm font-medium">
-          <span className="mr-2 text-lg">＋</span> Ajouter
+        <div className='flex flex-row gap-4 items-center'>
+     <h1 className="text-2xl font-semibold">Liste de vos campagnes</h1>
+     <Link to='/recruteur/ajouter-offre'>
+      <button className="flex items-center bg-white border border-[#4d08a1] text-[#4d08a1] px-4 py-1 rounded-full hover:bg-purple-50 text-sm font-medium">
+          <span className="mr-2 text-lg"> <AddCircleRoundedIcon sx={{color:'#4d08a1'}}/> </span> Ajouter
         </button>
+     </Link>
+
+       
+        </div>
+         <input
+                type="text"
+                placeholder="Rechercher un candidat..."
+                className="border border-[#eeedf0] bg-white px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-purple-500"
+              />
+       
       </div>
 
       <div className="overflow-x-auto">

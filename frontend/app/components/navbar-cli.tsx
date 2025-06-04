@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import Chip from '@mui/material/Chip';
-import LogoIcon from '../images/logo-icon.png';
+import LogoIcon from '../images/logo-icon2.png';
 import { Link, useNavigate } from 'react-router';
 import { useState } from 'react';
 import { Menu, MenuItem } from '@mui/material';

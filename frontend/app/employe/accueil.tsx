@@ -3,67 +3,9 @@ import { NavbarGen } from '~/components/navbar-gen';
 import { Link } from 'react-router';
 import bg from "../images/bg3.png";
 import NavbarCli from '~/components/navbar-cli';
+import axios from 'axios';
 
-/* ******** Afaka alana fa données statiques ireto ******** */
-{/* 
-const jobsTest = [
-  {
-    id: 1,
-    title: 'Développeur React',
-    description: 'Appli front-end en React.',
-    company: 'TechCorp',
-    category: 'Développement Web',
-    location: 'Freelance',
-    budget: 400,
-    experience: 'Intermédiaire',
-    postedAt: '1min',
-  },
-  {
-    id: 2,
-    title: 'Designer UI/UX',
-    description: 'Conception d’une UI mobile.',
-    company: 'Designify',
-    category: 'Design',
-    location: 'Sur site',
-    budget: 200,
-    experience: 'Débutant',
-    postedAt: '2j',
-  },
-  {
-    id: 3,
-    title: 'Rédacteur SEO',
-    description: 'Contenu optimisé pour moteurs de recherche.',
-    company: 'ContentLab',
-    category: 'Marketing',
-    location: 'Freelance',
-    budget: 150,
-    experience: 'Débutant',
-    postedAt: '3j',
-  },
-  {
-    id: 4,
-    title: 'DevOps',
-    description: 'CI/CD, monitoring et cloud infrastructure.',
-    company: 'InfraPro',
-    category: 'Développement Web',
-    location: 'Sur site',
-    budget: 850,
-    experience: 'Expert',
-    postedAt: '1 mois',
-  },
-  {
-    id: 5,
-    title: 'Développeur Full Stack',
-    description: 'Node.js + React',
-    company: 'WebGen',
-    category: 'Développement Web',
-    location: 'Freelance',
-    budget: 600,
-    experience: 'Intermédiaire',
-    postedAt: '3j',
-  },
-];
-*/}
+
 interface Job {
   id: number;
   title: string;
@@ -84,41 +26,51 @@ export default function Accueil() {
   const [budgetMax, setBudgetMax] = useState('');
   const [experiences, setExperiences] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState('recent');
+  const [loading, setLoading] = useState(true);
+
 
 
 // récupération des offres d'emploi
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const res = await fetch("http://localhost:5000/offer/open"); // Adjust if needed
-        const data = await res.json();
+useEffect(() => {
+  const fetchJobs = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/offer/open");
 
-        if (data.status === "success") {
-            console.log("Data fetched successfully:", data);
-          const offers = data.offers.map((offer: any) => ({
-            id: offer.id,
-            title: offer.title,
-            description: extractGeneralInfo(offer.description),
-            company: offer.company?.name || "Entreprise inconnue",
-            category: offer.category,
-            location: offer.location,
-            postedAt: new Date(offer.posted_at).toLocaleDateString(),
-             budget: extractBudget(offer.description),
-             experience : 'Intermediaire',
-          }));
+      if (res.data.status === "success") {
+       
 
-          setJobs(offers);
-         
-        }
-      } catch (err) {
-        console.error("Erreur lors du chargement des offres:", err);
+        const offers = res.data.offers.map((offer: any) => ({
+          id: offer.id,
+          title: offer.title,
+          description: extractGeneralInfo(offer.description),
+          company: offer.company?.name || "Entreprise inconnue",
+          category: offer.category,
+          location: offer.location,
+          postedAt: new Date(offer.posted_at).toLocaleDateString(),
+          budget: extractBudget(offer.description),
+          experience: "Intermediaire",
+        }));
+         console.log("Data fetched successfully:", offers);
+        setJobs(offers);
+         setLoading(true)
       }
-    };
+    } catch (error) {
+      console.error("Erreur lors du chargement des offres:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchJobs();
-      console.log("Filtered jobs retrieved:", jobs);
+  fetchJobs();
+}, []);
 
-  }, []);
+useEffect(() => {
+ 
+  console.log("Jobs state updated:", jobs);
+ 
+}, [jobs]);
+
+  
 
   const extractGeneralInfo = (desc: string) => {
   const split = desc.split("**Missions")[0]; // keep text before first mission marker
@@ -142,23 +94,39 @@ const salaryMatch = salarySection.match(/(\d[\d\s]*)\s*(\$|dollars)?/i);
   };
 
   // Filtrage des données offres
-  const filteredJobs = useMemo(() => {
-    let data = [...jobs];
- console.log("Jobs state updated:", jobs);
-    
-    if (category) data = data.filter((job) => job.category === category);
-    if (location) data = data.filter((job) => job.location === location);
-    if (budgetMin) data = data.filter((job) => job.budget >= Number(budgetMin));
-    if (budgetMax) data = data.filter((job) => job.budget <= Number(budgetMax));
-    if (experiences.length)
-      data = data.filter((job) => experiences.includes(job.experience));
+ const filterJobs = useMemo(() => {
+  // Si aucun filtre ni tri, retourner tous les jobs
+  const noFilterApplied =
+    !category &&
+    !location &&
+    !budgetMin &&
+    !budgetMax &&
+    experiences.length === 0 &&
+    !sortBy;
 
-    // Apply sorting
-    if (sortBy === 'budgetAsc') data.sort((a, b) => a.budget - b.budget);
-    if (sortBy === 'budgetDesc') data.sort((a, b) => b.budget - a.budget);
+  if (noFilterApplied) {
+    console.log("Aucun filtre appliqué, tous les jobs sont affichés.");
+    return jobs;
+  }
 
-    return data;
-  }, [category, location, budgetMin, budgetMax, experiences, sortBy]);
+  // Appliquer les filtres
+  let data = [...jobs];
+  console.log("Jobs data state updated:", data);
+
+  if (category) data = data.filter((job) => job.category === category);
+  if (location) data = data.filter((job) => job.location === location);
+  if (budgetMin) data = data.filter((job) => job.budget >= Number(budgetMin));
+  if (budgetMax) data = data.filter((job) => job.budget <= Number(budgetMax));
+  if (experiences.length)
+    data = data.filter((job) => experiences.includes(job.experience));
+
+  // Appliquer le tri
+  if (sortBy === "budgetAsc") data.sort((a, b) => a.budget - b.budget);
+  if (sortBy === "budgetDesc") data.sort((a, b) => b.budget - a.budget);
+
+  return data;
+}, [jobs, category, location, budgetMin, budgetMax, experiences, sortBy]);
+
 
   return (
     <main className="flex flex-col items-center pt-2 pb-4 bg-gray-100 font-sans">
@@ -256,7 +224,7 @@ const salaryMatch = salarySection.match(/(\d[\d\s]*)\s*(\$|dollars)?/i);
         {/* Job List */}
         <section className="flex-1">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-semibold">Offres d'emploi</h2>
+            <h2 className="text-2xl font-semibold">Offres d'emploi disponibles</h2>
             <div>
               <label className="text-sm mr-2">Trier par:</label>
               <select
@@ -270,18 +238,19 @@ const salaryMatch = salarySection.match(/(\d[\d\s]*)\s*(\$|dollars)?/i);
               </select>
             </div>
           </div>
-
-       {filteredJobs.length > 0 ? (
-  filteredJobs.map((job) => (
+          {loading ? (
+  <p>Chargement des offres...</p>
+) : filterJobs.length > 0 ? (
+  filterJobs.map((job) => (
     <div
       key={job.id}
       className="bg-white p-5 mb-4 rounded-md shadow hover:shadow-md transition"
     >
       <div className="flex justify-between items-start">
-        <div>
+        <div className='sm:w-full w-2/3 mr-4'>
           <h3 className="text-xl font-bold text-gray-800">{job.title}</h3>
           <p className="text-sm text-gray-600 mt-1">{job.description}</p>
-          <div className="text-sm text-gray-500 mt-2">
+          <div className="text-sm text-gray-500 mt-2 ">
             <strong>Entreprise:</strong> {job.company} | <strong>Budget:</strong> ${job.budget} |{' '}
             <strong>Expérience:</strong> Intermédiaire
           </div>
@@ -289,10 +258,12 @@ const salaryMatch = salarySection.match(/(\d[\d\s]*)\s*(\$|dollars)?/i);
         </div>
         <Link
           to={`jobDetail/${job.id}`}
-          className="mt-1 px-4 py-2 text-sm text-white rounded hover:bg-yellow-700"
-          style={{ backgroundColor: '#0a8051' }}
+          className="mt-1 px-3 py-2 text-sm text-white rounded hover:bg-yellow-700 w-[20%] flex justify-center"
+          style={{ backgroundColor: '#0a8051', alignItems: 'center', background: 'linear-gradient(264.79deg, #023047 47.52%, #206EBB 126.2%)',
+              borderRadius: '40px'
+              }}
         >
-          Voir détail
+          <p>+ Voir détail</p>
         </Link>
       </div>
     </div>
@@ -300,6 +271,8 @@ const salaryMatch = salarySection.match(/(\d[\d\s]*)\s*(\$|dollars)?/i);
 ) : (
   <p className="text-gray-500">Aucunes offre ne correspond aux filtres sélectionnés.</p>
 )}
+
+       
         </section>
       </div>
     </main>

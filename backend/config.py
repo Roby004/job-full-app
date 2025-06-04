@@ -3,6 +3,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class config:
     SECRET_KEY = os.getenv('SECRET KEY', 'my_secret_key')
     SQLALCHEMY_TRACK_MODIFICATION = False
+
+    UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads', 'cvs')
+    ALLOWED_EXTENSIONS = {'pdf', 'doc', 'docx'}
     
 class DevelopmentConfig(config):
     MAIL_SERVER = os.environ.get('MAIL_SERVER')

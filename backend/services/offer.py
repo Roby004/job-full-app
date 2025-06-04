@@ -70,3 +70,4 @@ def get_open_offers():
         "status": "success",
         "offers": [offer.serialize() for offer in offers]
     }), 200
+

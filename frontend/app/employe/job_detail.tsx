@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router';
 import NavbarCli from "../components/navbar-cli";
+import BulbIcon from 'app/images/bulb.png';
+
 import {
   Modal,
   Box,
@@ -72,9 +74,49 @@ const JobDetailsPage = () => {
       const [similarJobs, setSimilarJobs] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
+  const [matchingScore, setMatchingScore] = useState(null);
+
   
 
     const handleOpen = () => setOpen(true);
+
+    const fetchMatchingScore = async (offer) => {
+  try {
+    const token = localStorage.getItem("token");
+    const decoded = parseJwt(token);
+
+    if (!decoded || !decoded.user_id) {
+      console.error("Utilisateur non connecté ou token invalide.");
+      return;
+    }
+
+    const preferences = JSON.parse(localStorage.getItem("candidatePreferences"));
+
+    const res = await fetch("http://localhost:5000/matching", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        user_id: decoded.user_id, // facultatif si ton backend utilise get_jwt_identity()
+        offer: offer,             // doit contenir au moins l'attribut "id"
+        preferences: preferences  // ajout des préférences ici
+      }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      setMatchingScore(data.matching_score);
+      console.log("Matching réussi:", data);
+    } else {
+      console.error("Erreur matching:", data);
+    }
+  } catch (err) {
+    console.error("Erreur réseau lors du matching:", err);
+  }
+}
+
   const handleProceed = async () => {
       const token = localStorage.getItem("token");
        const decoded = parseJwt(token);
@@ -140,6 +182,9 @@ const JobDetailsPage = () => {
         console.log("Offer data get:", data);
         if (data && data.id) {
           setOffer(data);
+          
+fetchMatchingScore(data);
+
         }
       } catch (err) {
         console.error("Erreur lors du chargement de l'offre :", err);
@@ -147,6 +192,7 @@ const JobDetailsPage = () => {
     };
     if (id) {
         fetchOffer();
+        
       }
     }, [id]);
 // Echec : ici
@@ -155,18 +201,38 @@ const JobDetailsPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 px-8 py-6 pt-2" style={{ fontFamily: 'Open Sans', marginTop: "0px" }}>
         <NavbarCli />
-                  <Link to="/" className="max-w-4xl mx-50 p-6 mt-6 text-green-600 hover:underline my-4">&larr; Retour aux offres </Link>
+                  <Link to="/employe/accueil" className="flex flex-row max-w-4xl mx-50 p-6 mt-0 text-[#929c9f] font-semibold hover:underline my-4">&larr; Retour aux offres |<span className='text-[#023047] flex flex-row gap-4'> {offer.title} <img src={BulbIcon}/> </span>  </Link>
 
             <div className="max-w-4xl mx-auto p-6 mt-6 font-sans text-gray-800 bg-white rounded-lg shadow-md flex flex-row">
         <div className="lside ml-10" style={{ width: '70%' , minWidth: '50%'}}>
 
-             <h1 className="text-2xl font-bold text-green-700">{offer.title}</h1>
+             <h1 className="text-2xl font-bold text-[#023047]">{offer.title}</h1>
         <p className="text-sm text-gray-600 mt-1">{offer.company?.name} · {offer.location}</p>
 
         <div className="mt-4">
           <h2 className="text-lg font-semibold">Description de l'offre</h2>
           <p className="text-gray-700 mt-2"> {offer.description}</p>
         </div>
+        <Box sx={{mr:2, mt:4}}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1 , borderBottom: '1px solid #dadada', borderRadius: '4px', padding: '10px'}}>
+                  <Typography variant="body2">Télétravail ou présentiel</Typography>
+                  <Typography variant="body2">{offer.mode_travail}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1 ,borderBottom: '1px solid #dadada', borderRadius: '4px', padding: '10px'}}>
+                  <Typography variant="body2">Type de contrat</Typography>
+                  <Typography variant="body2">{offer.type_offre}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1 ,borderBottom: '1px solid #dadada', borderRadius: '4px', padding: '10px'}}>
+                  <Typography variant="body2">Fourchette de salaire</Typography>
+                  <Typography variant="body2">
+                    {offer.salaire}€
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1 ,borderBottom: '1px solid #dadada', borderRadius: '4px', padding: '10px'}}>
+                  <Typography variant="body2">Catégorie</Typography>
+                  <Typography variant="body2">{offer.category}</Typography>
+                </Box>
+              </Box>
 
        <div className="mt-4">
   <h2 className="text-lg font-semibold">Compétences</h2>
@@ -175,7 +241,7 @@ const JobDetailsPage = () => {
       offer.skills_required.map((skill, index) => (
         <span
           key={index}
-          className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"
+          className="bg-[#fff1cc] text-[#c79202] px-3 py-1 rounded-full text-sm font-medium"
         >
           {skill.name}
         </span>
@@ -187,7 +253,7 @@ const JobDetailsPage = () => {
 </div>
 
         
-          <Button variant="contained"  onClick={handleOpen} className="mt-8" sx={{marginTop: '20px', backgroundColor: '#0a8051', color: 'white', '&:hover': { backgroundColor: '#45a049' } }}>
+          <Button variant="contained"  onClick={handleOpen} className="mt-8" sx={{marginTop: '20px', backgroundColor: '#023047', color: 'white', '&:hover': { backgroundColor: '#45a049' } }}>
         Postuler
       </Button>
         </div>
@@ -196,7 +262,21 @@ const JobDetailsPage = () => {
                 <Grid container spacing={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' , backgroundColor: '#f6f8f9', padding: '20px', borderRadius: '10px' }}>
                     <h2 className="text-lg font-semibold">Matching</h2>
                     <p className="text-gray-700 mt-2">cet offre, correspond à votre profil de : </p>
-                    <p className="text-gray-700 mt-2"> 60%</p>
+                   <p
+                    className="text-gray-700 mt-2 py-4"
+                    style={{
+                      backgroundColor: '#0a8051',
+                      alignItems: 'center',
+                      background: 'linear-gradient(264.79deg, #206EBB 47.52%,  #BAA3EC 126.2%)',
+                      borderRadius: '40px',
+                      fontSize: '24px',
+                      color: 'white',
+                      width: '100%',
+                      textAlign: 'center'
+                    }}
+                  >
+                    {matchingScore !== null ? `${matchingScore}%` : "Chargement..."}
+                  </p>
                   
                 </Grid>
                 <h2 className="text-lg font-semibold">Similar Jobs</h2>

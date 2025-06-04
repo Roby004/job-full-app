@@ -1,0 +1,1 @@
+import"./chunk-LSOULM7L-io0bedPh.js";import{e as m,H as t}from"./DefaultPropsProvider-D3XoZZZR.js";import{b as o}from"./createSimplePaletteValueFilter-Ci2NaAvL.js";function a(){const e=o(t);return e[m]||e}export{a as u};

@@ -8,6 +8,7 @@ from routes.company import company_bp
 from routes.jobofferskill import offerskill_bp
 from routes.offer import offer_bp
 from routes.skills import skills_bp
+from routes.userexperience import userexperience_bp
 #from routes.notify import match_bp
 import os
 import models
@@ -36,6 +37,8 @@ def create_app(config_name='development'):
     db.init_app(app)
     migrate = Migrate(app, db)
     swagger = Swagger(app)
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(application_bp)
@@ -45,6 +48,7 @@ def create_app(config_name='development'):
     app.register_blueprint(offerskill_bp)
     app.register_blueprint(offer_bp)
     app.register_blueprint(skills_bp)
+    app.register_blueprint(userexperience_bp)
     #app.register_blueprint(match_bp)
     return app
 

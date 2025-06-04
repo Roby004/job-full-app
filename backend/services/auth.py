@@ -112,12 +112,26 @@ def add_user(data):
     except Exception as e:
         db.session.rollback()
         return jsonify({'status': 'error', 'message': str(e)}), 500
+    
 
 def get_user_info(user):
     try:
+        user_data = user.serialize()
+
+        if user.role == "candidat":
+            candidat = Candidat.query.filter_by(user_id=user.id).first()
+            if candidat:
+                user_data["candidat"] = candidat.serialize()
+
+        elif user.role == "recruteur":
+            company = Company.query.filter_by(user_id=user.id).first()
+            if company:
+                user_data["recruteur"] = company.serialize()
+
         return jsonify({
             'status': 'success',
-            'data': user.serialize()
+            'data': user_data
         }), 200
+
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500

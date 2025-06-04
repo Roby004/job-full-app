@@ -23,8 +23,8 @@
 }
 
 .tab.active {
-  border-bottom: 2px solid #7a5ef8;
-  color: #7a5ef8;
+  border-bottom: 2px solid #023047;
+  color: #023047;
 }
 
 .time-filter {
@@ -67,9 +67,11 @@
 .profile-button {
   margin-right: 15px;
   padding: 6px 12px;
-  background: #7a5ef8;
-  color: #fff;
-  border: none;
+  color: #023047;
+  border : 2px solid #023047;
+  
+  font-family: 'Open Sans';
+  font-size: 13px;
   border-radius: 6px;
   cursor: pointer;
 }

@@ -42,9 +42,9 @@ function DemoPageContent() {
     sx={{
       marginX: '20px',
       padding: '5px',
-     backgroundColor: '#63be7b',
-      backgroundImage : 'url(/app/images/back2.png)',
-      backgroundSize: '99%',
+     backgroundColor: '#023047',
+      backgroundImage : 'url(/app/images/back.png)',
+      backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       borderRadius: '8px',
       alignItems: 'center',
@@ -52,13 +52,13 @@ function DemoPageContent() {
   >
     {/* Hello Zaza section: 9 columns */}
     <Grid sx={{ gridColumn: 'span 9' , width: '70%', padding : '10px' }}>
-      <Typography variant="h4" sx={{ color: '#000' }}>
+      <Typography variant="h4" sx={{ color: '#fff' }}>
         Hello Zaza !
       </Typography>
     </Grid>
 
     {/* Suggestion section: 3 columns */}
-    <Grid sx={{ gridColumn: 'span 3' , width: '30%', padding : '10px' }}>
+    <Grid sx={{ gridColumn: 'span 3' , width: '30%', padding : '10px', color: '#fff' }}>
       <Box display="flex" alignItems="center" justifyContent="flex-end">
         <img src="/app/images/portfolio.png" alt="portfolio" width="60px" style={{ marginRight: '10px' }} />
         <Box>
