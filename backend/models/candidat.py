@@ -16,6 +16,7 @@ class Candidat(db.Model):
     skills = db.relationship('CandidateSkills', backref='candidate', lazy=True)
     applications = db.relationship('Application', backref='candidate', lazy=True)
     experiences = db.relationship('UserExperience', backref='candidat', lazy=True)
+    educations = db.relationship('UserEducation', backref='candidat', lazy=True)
     
     
     def __init__(self, fullname, resume, user_id):
@@ -36,4 +37,6 @@ class Candidat(db.Model):
                 } for s in self.skills if s.skill is not None],
             'applications': [app.id for app in self.applications],
             'experiences': [exp.serialize() for exp in self.experiences],
+            'educations': [edu.serialize() for edu in self.educations],
+            'resume': self.resume
         }

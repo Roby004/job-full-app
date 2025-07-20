@@ -1,0 +1,5 @@
+MAIL_SERVER=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=amboarampitiavana8@gmail.com
+MAIL_PASSWORD=pemvdqgujvymsrxo
+MAIL_DEFAULT_SENDER=amboarampitiavana8@gmail.com

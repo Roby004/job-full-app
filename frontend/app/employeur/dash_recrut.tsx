@@ -19,7 +19,7 @@ const drawerWidth = 240;
 /* Liste des navigations side menu */
 const menuItems = [
   { text: 'Tableau de bord', path: '/recruteur/dashboard', icon: <HomeRoundedIcon /> },
-  { text: 'Talent Matcher', path: '/recruteur/talent_matcher', icon: <PersonRoundedIcon /> },
+  { text: 'offres', path: '/recruteur/talent_matcher', icon: <PersonRoundedIcon /> },
    { text: 'Modèle prédictif', path: '/recruteur/modele_predictif', icon: <RuleRoundedIcon /> },
   { text: 'Évaluation', path: '/recruteur/evaluation', icon: <RuleRoundedIcon /> },
 ];

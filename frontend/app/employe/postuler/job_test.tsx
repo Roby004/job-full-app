@@ -49,7 +49,7 @@ const QuestionnairePage: React.FC = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 font-sans">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-semibold">Question {currentIndex + 1} / {questions.length}</h2>
+        <h2 className="text-lg font-semibold">Questions {currentIndex + 1} / {questions.length}</h2>
         <div className="text-sm font-semibold text-red-600">
           ⏰ {minutes}:{seconds < 10 ? '0' : ''}{seconds}
         </div>
@@ -98,7 +98,7 @@ const QuestionnairePage: React.FC = () => {
         <div className="mt-6 flex justify-end">
           <button
             onClick={handleNext}
-            className="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700"
+            className="bg-[#023047]-600 text-white px-6 py-2 rounded hover:bg-[#023047]-700"
           >
             {currentIndex === questions.length - 1 ? 'Soumettre' : 'Suivant'}
           </button>

@@ -4,8 +4,11 @@ import NavbarRecrut from '../components/navbar-recrut';
 import { Box, Typography } from '@mui/material';
 import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
 import FreeCancellationRoundedIcon from '@mui/icons-material/FreeCancellationRounded';
+import EtapeRecrut from '~/components/liste_etape_recrut';
+import axios from 'axios';
+import '../css/listParticipant.css';
 
-interface Participant {
+/*interface Participant {
   id: number;
   name: string;
   role: string;
@@ -20,9 +23,9 @@ interface Participant {
   stepProgress: string;
   progress: number;
   statusColor?: 'green' | 'red';
-}
+}*/
 
-const participants: Participant[] = [
+/*const participants: Participant[] = [
   {
     id: 1,
     name: 'Marimar Delmar',
@@ -85,18 +88,21 @@ const participants: Participant[] = [
     progress: 100,
   },
 ];
+*/
 
 const DetailOffrePage: React.FC = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"participants" | "description">("participants");
+  const [activeTab, setActiveTab] = useState<"participants" | "description" | "etapes">("participants");
    const { id } = useParams();
   // Fetch data from backend (offer by ID)
 const [offer, setOffer] = useState<any | null>(null);
+const [participants, setParticipants] = useState([]);
 
 useEffect(() => {
   const fetchOffer = async () => {
   try {
-    const token = localStorage.getItem("token"); // assuming you stored it during login
+    const token = localStorage.getItem("token"); 
+    console.log("user id" , id);// assuming you stored it during login
 
     const res = await fetch(`http://localhost:5000/offer/${id}`, {
       headers: {
@@ -112,6 +118,8 @@ useEffect(() => {
       console.log("Offer data get:", data);
       if (data && data.id) {
         setOffer(data);
+           localStorage.setItem("selectedOfferId", offer?.id);
+ //localStorage.setItem("SelectedOfferCompanyName", offer.company?.name || "");
       }
     } catch (err) {
       console.error("Erreur lors du chargement de l'offre :", err);
@@ -119,8 +127,28 @@ useEffect(() => {
   };
   if (id) {
       fetchOffer();
+    
     }
+  }, [id])
+  console.log("Offer data:", offer?.id, offer?.company?.name, offer?.title);
+  
+  useEffect(() => {
+    const fetchParticipants = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/offer/${id}/candidats`
+        );
+        setParticipants(res.data);
+      } catch (err) {
+        console.error("Erreur lors du chargement des participants", err);
+      }
+    };
+    fetchParticipants();
   }, [id]);
+  console.log("Participants data:", participants);
+  // assuming company name is available
+  
+
 
   const handleRowClick = (id: number) => {
     navigate(`/recruteur/candidat/${id}`);
@@ -135,37 +163,48 @@ useEffect(() => {
       {/* Header Tabs */}
       <div className="mb-6 bg-white px-4 w-full pt-6 pb-0 border-b border-gray-200">
         <h2 className="text-xl font-semibold mb-1">
-          Talent matcher / Détail de l'offre
+          offres / Détail de l'offre
           <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
-            Active
+            Ouvert
           </span>
         </h2>
 
-        <div className="flex items-center space-x-6 pb-2 text-sm text-gray-600 mt-2">
+        <div className="flex items-center space-x-6 pb-0 text-sm text-gray-600 mt-2">
           <button
-            className={`relative font-semibold ${
-              activeTab === "participants" ? "text-purple-600" : "text-gray-500"
+            className={`relative font-semibold pb-2 ${
+              activeTab === "participants" ? "text-[#023047]-600  active" : "text-gray-500"
             }`}
             onClick={() => setActiveTab("participants")}
           >
             Participants{" "}
-            <span className="ml-1 text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">
+            <span className="ml-1 text-xs bg-[#023047]-100 text-[#023047]-700 px-2 py-0.5 rounded-full ">
               {participants.length}
             </span>
             {activeTab === "participants" && (
-              <div className="absolute -bottom-2 left-0 h-1 w-full bg-purple-600 rounded-t" />
+              <div className="-bottom-2 left-0 h-1 w-full bg-[#023047]-600 rounded-t" />
             )}
           </button>
 
           <button
-            className={`font-semibold ${
-              activeTab === "description" ? "text-purple-600" : "text-gray-500"
+            className={`font-semibold pb-2 ${
+              activeTab === "description" ? "text-[#023047]-700 active" : "text-gray-500"
             }`}
             onClick={() => setActiveTab("description")}
           >
             Description
             {activeTab === "description" && (
-              <div className=" -bottom-2 left-0 h-1 w-full bg-purple-600 rounded-t" />
+              <div className=" -bottom-2 left-0 h-1 w-full bg-[#023047]-600 rounded-t" />
+            )}
+          </button>
+            <button
+            className={`font-semibold pb-2 ${
+              activeTab === "etapes" ? "text-[#023047]-800 active" : "text-gray-500"
+            }`}
+            onClick={() => setActiveTab("etapes")}
+          >
+            Etapes
+            {activeTab === "etapes" && (
+              <div className=" -bottom-2 left-0 h-1 w-full bg-[#023047]-600 rounded-t" />
             )}
           </button>
         </div>
@@ -183,7 +222,7 @@ useEffect(() => {
                 </button>
                 <button className="bg-white border border-[#e0e0e0] text-sm px-4 py-2 rounded-lg text-gray-700">
                   Filtres
-                  <span className="ml-2 bg-purple-600 text-white px-2 py-0.5 rounded-full text-xs">
+                  <span className="ml-2 bg-[#023047]-600 text-white px-2 py-0.5 rounded-full text-xs">
                     5
                   </span>
                 </button>
@@ -191,7 +230,7 @@ useEffect(() => {
               <input
                 type="text"
                 placeholder="Rechercher un candidat..."
-                className="border border-[#e0e0e0] bg-white px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-purple-500"
+                className="border border-[#e0e0e0] bg-white px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-[#023047]-500"
               />
             </div>
 
@@ -200,15 +239,15 @@ useEffect(() => {
               <table className="w-full table-auto">
                 <thead>
                   <tr className="text-center text-sm text-gray-500 mb-2">
-                    <th className="pb-2">Candidat</th>
-                    <th className="pb-2">Score global</th>
-                    <th className="pb-2">Test matching</th>
-                    <th className="pb-2">Feedback</th>
-                    <th className="pb-2">CV matching</th>
-                    <th className="pb-2">Progression</th>
+                    <th className="pb-2 w-2/5" >Candidat</th>
+                    <th className="pb-2 w-[100px]  break-words whitespace-normal">Score global</th>
+                    <th className="pb-2 w-[100px] break-words whitespace-normal">Test matching</th>
+                    <th className="pb-2 w-[100px]">Feedback</th>
+                    <th className="pb-2 w-[100px]  break-words whitespace-normal">CV matching</th>
+                    <th className="pb-2 w-1/4">Progression</th>
                   </tr>
                 </thead>
-                <tbody className="space-y-4">
+                  <tbody className="space-y-4">
                   {participants.map((p, index) => (
                     <tr key={index}>
                       <td colSpan={6}>
@@ -216,52 +255,55 @@ useEffect(() => {
                           className="bg-white p-4 rounded-lg shadow-sm flex items-center justify-between"
                           onClick={() => handleRowClick(p.id)}
                         >
+                          {/* Colonne Candidat */}
                           <div className="flex items-center w-2/5">
                             <input type="checkbox" className="mr-4" />
-                            <img src={p.image} alt={p.name} className="w-10 h-10 rounded-full mr-4" />
+                            <img src='/app/images/avatar1.png' alt={p?.fullname} className="w-10 h-10 rounded-full mr-4" />
                             <div>
-                              <p className="font-semibold text-sm">{p.name}</p>
-                              <p className="text-xs text-gray-500">
-                                {p.role} · {p.experience}
-                              </p>
-                              <div className="flex gap-1 mt-2 flex-wrap">
-                                {p.tags.map((tag, i) => (
-                                  <span
-                                    key={i}
-                                    className="bg-orange-100 text-orange-600 text-xs px-2 py-0.5 rounded-full"
-                                  >
-                                    {tag}
-                                  </span>
-                                ))}
-                              </div>
+                              <p className="font-semibold text-sm">{p?.fullname}</p>
+                             <div className="flex gap-1 mt-2 flex-wrap">
+                              {p.skills?.map((tag, i) => (
+                                <span
+                                  key={i}
+                                  className="bg-orange-100 text-orange-600 text-xs px-2 py-0.5 rounded-full"
+                                >
+                                  {tag.name}
+                                </span>
+                              ))}
+                            </div>
                             </div>
                           </div>
 
-                          <div className="w-[80px] text-center text-xl font-semibold text-gray-800">
-                            {p.globalScore}%
+                          {/* Colonne Score global */}
+                          <div className="w-[100px] text-center text-xl font-semibold text-gray-800">
+                            70%
                           </div>
 
-                          <div className="text-center w-[80px] text-sm">{p.testMatching}%</div>
+                          {/* Colonne Test matching */}
+                          <div className="text-center w-[100px] text-sm">80%</div>
 
-                          <div className="text-center w-[80px] text-sm">
+                          {/* Colonne Feedback */}
+                          <div className="text-center w-[100px] text-sm">
                             <div className="text-yellow-500 text-xl">★</div>
-                            <div>{p.feedback}/5</div>
+                            <div>{p.avis_general}/5</div>
                           </div>
 
-                          <div className="text-center w-[80px] text-sm">
+                          {/* Colonne CV matching */}
+                          <div className="text-center w-[100px] text-sm">
                             <div
                               className={`text-sm font-medium ${
-                                p.statusColor === "red" ? "text-red-500" : "text-green-600"
+                                p.cv_matching < 60 ? "text-red-500" : "text-green-600"
                               }`}
                             >
-                              {p.cvMatching}%
+                              {p.cv_matching}%
                             </div>
                           </div>
 
+                          {/* Colonne Progression */}
                           <div className="text-right text-sm w-1/4">
                             <div className="mb-1">
                               {p.stage}
-                              <span className="ml-2 text-gray-600">{p.stepProgress}</span>
+                              <span className="ml-2 text-gray-600">{p.step_progress}</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
                               <div
@@ -275,10 +317,11 @@ useEffect(() => {
                     </tr>
                   ))}
                 </tbody>
+
               </table>
             </div>
           </>
-        ) : (
+        ) : (activeTab === "description" ? (
           // DESCRIPTION TAB
           <div className="bg-white p-6 rounded shadow-sm max-w-4xl mx-auto text-sm leading-6 text-gray-700">
            {offer && (
@@ -295,7 +338,7 @@ useEffect(() => {
               <FreeCancellationRoundedIcon className="mr-1" />Fermer l'offre
             
             </button>
-            <button className=" w- 100 ml-2 text-sm  border boder-purple-700  px-2 py-2 rounded-xl">
+            <button className=" w- 100 ml-2 text-sm  border boder-[#023047]-700  px-2 py-2 rounded-xl">
                 <BorderColorRoundedIcon className="mr-1" />
               Modifier l'offre
             </button> 
@@ -362,7 +405,11 @@ useEffect(() => {
 )}
 
           </div>
-        )}
+        ) : (
+          // ETAPES TAB
+          <EtapeRecrut />
+            ))}
+              
       </div>
     </div>
   );

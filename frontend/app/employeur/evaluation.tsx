@@ -40,7 +40,7 @@ const EvaluationPage: React.FC = () => {
 
       <div className="flex flex-wrap gap-3 mb-8">
         {['Tous', 'Personnalité et profil professionnel', 'Intérêts et motivations', 'Aptitudes commerciales', 'Raisonnement et pensée critique', 'Intelligence émotionnelle et gestion du stress', 'Connaissances métiers', 'MyLab', 'Smart interview', 'Informatique et Technique'].map((cat) => (
-          <button key={cat} className="px-4 py-1 rounded-full text-sm bg-purple-100 text-purple-700">
+          <button key={cat} className="px-4 py-1 rounded-full text-sm bg-[#023047]-100 text-[#023047]-700">
             {cat}
           </button>
         ))}
@@ -52,7 +52,7 @@ const EvaluationPage: React.FC = () => {
           {evaluations.map((evalItem) => (
             <div key={evalItem.id} className="bg-white p-4 rounded-lg shadow-sm flex flex-col justify-between">
               <div className="flex items-center justify-between mb-2">
-                <div className="w-10 h-10 bg-purple-100 rounded-md" />
+                <div className="w-10 h-10 bg-[#023047]-100 rounded-md" />
                 <span className="text-sm font-semibold text-gray-700">{evalItem.credit} <span className="text-xs">Crédit</span></span>
               </div>
               <p className="text-sm font-semibold mb-1">{evalItem.title}</p>
@@ -107,7 +107,7 @@ const EvaluationPage: React.FC = () => {
               />
             </label>
 
-            <button className="w-full text-left text-gray-700 hover:text-purple-600 flex items-center gap-2">⚙️ Paramétrer l’envoi</button>
+            <button className="w-full text-left text-gray-700 hover:text-[#023047]-600 flex items-center gap-2">⚙️ Paramétrer l’envoi</button>
             <button
               onClick={() =>
                 setEvaluations((prev) => prev.map((e) => ({ ...e, isSelected: false })))
@@ -118,7 +118,7 @@ const EvaluationPage: React.FC = () => {
             </button>
           </div>
 
-          <button className="mt-6 w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-2 rounded-full text-sm font-semibold shadow hover:from-purple-700 hover:to-purple-800">
+          <button className="mt-6 w-full bg-gradient-to-r from-[#023047]-600 to-[#023047]-700 text-white py-2 rounded-full text-sm font-semibold shadow hover:from-[#023047]-700 hover:to-[#023047]-800">
             📤 Envoyer
           </button>
         </div>

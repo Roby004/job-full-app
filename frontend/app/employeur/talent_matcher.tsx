@@ -67,7 +67,7 @@ export default function TalentMatcherPage() {
         <div className='flex flex-row gap-4 items-center'>
      <h1 className="text-2xl font-semibold">Liste de vos campagnes</h1>
      <Link to='/recruteur/ajouter-offre'>
-      <button className="flex items-center bg-white border border-[#4d08a1] text-[#4d08a1] px-4 py-1 rounded-full hover:bg-purple-50 text-sm font-medium">
+      <button className="flex items-center bg-white border border-[#4d08a1] text-[#4d08a1] px-4 py-1 rounded-full hover:bg-[#023047]-50 text-sm font-medium">
           <span className="mr-2 text-lg"> <AddCircleRoundedIcon sx={{color:'#4d08a1'}}/> </span> Ajouter
         </button>
      </Link>
@@ -77,7 +77,7 @@ export default function TalentMatcherPage() {
          <input
                 type="text"
                 placeholder="Rechercher un candidat..."
-                className="border border-[#eeedf0] bg-white px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-purple-500"
+                className="border border-[#eeedf0] bg-white px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-[#023047]-500"
               />
        
       </div>
@@ -107,7 +107,7 @@ export default function TalentMatcherPage() {
       <div className="grid grid-cols-7 gap-4 text-sm text-gray-700 items-center p-4">
         <div className="col-span-2 text-left">
           <p className="font-semibold">{offer.title}</p>
-          <p className="text-xs text-purple-600">{offer.category}</p>
+          <p className="text-xs text-[#023047]-600">{offer.category}</p>
         </div>
         <div className="text-center">100</div>
         <div className="text-center">{offer.location}</div>
@@ -133,7 +133,7 @@ export default function TalentMatcherPage() {
       </div>
 
       <div className="mt-6 flex justify-center">
-        <button className="bg-purple-700 hover:bg-purple-800 text-white text-sm font-semibold px-6 py-2 rounded-full">Voir plus</button>
+        <button className="bg-[#023047]-700 hover:bg-[#023047]-800 text-white text-sm font-semibold px-6 py-2 rounded-full">Voir plus</button>
       </div>
     </div>
   );

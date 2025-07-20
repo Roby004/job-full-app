@@ -91,6 +91,8 @@ const Profil: React.FC = () => {
   const [availableSkills, setAvailableSkills] = useState<any[]>([]);
   const [userData, setUserData] = useState<any>(null);
   const [experiences, setExperiences] = useState<any[]>([]);
+  const [education, setEducation] = useState<any[]>([]);
+  const [newEducation, setNewEducation] = useState({ formation: '', ecole: '', debdate_educ: '', findate_educ: '', description_educ : '' });
   const [newExp, setNewExp] = useState({ title: '', entreprise: '', debdate: '', findate: '', description: '' });
 const user = {
    
@@ -117,6 +119,9 @@ const user = {
       const data = res.data.data;
       setUserData(data);
       setExperiences(data?.candidat?.experiences || []);
+      setEducation(data?.candidat?.educations || []);
+      setResumeFile(data?.candidat?.resume ? new File([data.candidat.resume], 'resume.pdf') : null);
+      console.log('User Data:', data);
       console.log('skills',data?.candidat?.skills);
       setSkills(data?.candidat?.skills.map((s: any) => s.name));    };
     const fetchSkills = async () => {
@@ -128,7 +133,7 @@ const user = {
     fetchData();
     fetchSkills();
   }, []);
-  console.log("User Data:", skills);
+ // console.log("User Data:", skills);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewExp({ ...newExp, [e.target.name]: e.target.value });
 
@@ -140,6 +145,25 @@ const user = {
     if (response.data.status === "success") {
       setExperiences([...experiences, response.data.data]);
       setNewExp({ title: '', entreprise: '', debdate: '', findate: '', description: '' });
+    }
+  };
+    const handleEducChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewEducation({ ...newEducation, [e.target.name]: e.target.value });
+
+   const handleEducSubmit = async (e: React.FormEvent) => {
+    const eduData = {
+  formation: newEducation.formation,
+  ecole: newEducation.ecole,
+  deb_date: newEducation.debdate_educ,
+  fin_date: newEducation.findate_educ || null,
+  description: newEducation.description_educ
+};
+    e.preventDefault();
+    const response = await axios.post("http://localhost:5000/education", newEducation, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    });
+    if (response.data.status === "success") {
+      setEducation([...education, response.data.data]);
+      setNewEducation({ formation: '', ecole: '', debdate_educ: '', findate_educ: '', description_educ: '' });
     }
   };
 
@@ -179,6 +203,11 @@ const user = {
             removeSkill={(index) => setSkills(skills.filter((_, i) => i !== index))}
             availableSkills={availableSkills}
             experiences={experiences}
+            education={education}
+            newEducation={newEducation}
+            addEducation={handleEducSubmit}
+            removeEducation={(index) => setEducation(education.filter((_, i) => i !== index))}
+            handleEducChange={handleEducChange}
             removeExperience={(index) => setExperiences(experiences.filter((_, i) => i !== index))}
             newExp={newExp}
             handleChange={handleChange}

@@ -23,7 +23,7 @@ def new_candidat():
 # Route: Get, update, or delete a candidat
 @candidat_bp.route('/candidat/<string:candidat_id>', methods=['GET', 'PUT', 'DELETE'])
 @token_required
-def application_detail(candidat_id):
+def application_detail(current_user, candidat_id):
     if request.method == 'GET':
         return candidat_services.get_candidat(candidat_id)
     elif request.method == 'PUT':

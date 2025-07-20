@@ -2,6 +2,7 @@ from flask import jsonify
 from models.candidat import Candidat
 from models.application import Application
 from models.database import db
+from models.user import User
 
 # Create an Candidat
 def create_Candidat(data):
@@ -61,7 +62,26 @@ def get_candidat(id):
     candidat = Candidat.query.get(id)
     if not candidat:
         return jsonify({"status": "error", "message": "candidat not found"}), 404
-    return jsonify(candidat.serialize()), 200
+    user = User.query.get(candidat.user_id)
+    
+    data = {
+        'id': candidat.id,
+        'fullname': candidat.fullname,
+        'resume': candidat.resume,
+        'email': user.email if user else None,
+
+        'skills': [
+            {
+                'id': s.skill.id,
+                'name': s.skill.name
+            } for s in candidat.skills if s.skill is not None
+        ],
+        'experiences': [
+            exp.serialize() for exp in candidat.experiences
+        ]
+    }
+
+    return jsonify(data)
 
 from models.application import Application
 

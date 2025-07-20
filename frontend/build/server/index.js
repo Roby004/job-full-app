@@ -5,9 +5,9 @@ import { ServerRouter, useMatches, useActionData, useLoaderData, useParams, useR
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import * as React from "react";
-import { createElement, useState, useMemo, useEffect } from "react";
-import { Typography, TextField, FormGroup, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, FormControlLabel, Menu, MenuItem, Box as Box$1, Button, Stack as Stack$1, Grid as Grid$1, Modal, CssBaseline, AppBar, Toolbar, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Tooltip as Tooltip$1, Avatar as Avatar$1, Switch, Autocomplete, Chip as Chip$1, Checkbox } from "@mui/material";
-import { VisibilityOff, Visibility, Star, CloudDownload, WorkOutline, People, AttachMoney, LocationOn } from "@mui/icons-material";
+import React__default, { createElement, useState, useMemo, useEffect } from "react";
+import { Typography, TextField, FormGroup, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, FormControlLabel, Menu, MenuItem, Box as Box$1, Button, Stack as Stack$1, Grid as Grid$1, Modal, CssBaseline, AppBar, Toolbar, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Tooltip as Tooltip$1, Avatar as Avatar$1, Switch, Autocomplete, Chip as Chip$1, Checkbox, styled, Paper } from "@mui/material";
+import { VisibilityOff, Visibility, ArrowDropUp, ArrowDropDown, Star, CloudDownload, WorkOutline, People, AttachMoney, LocationOn } from "@mui/icons-material";
 import TextField$1 from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -472,6 +472,7 @@ const SignIn = withComponentProps(function SignIn2() {
         }
       });
       const userData = await userRes.json();
+      console.log("User data:", userData);
       if (userRes.ok && ((_a = userData == null ? void 0 : userData.data) == null ? void 0 : _a.role)) {
         const role = userData.data.role;
         if (role === "recruteur") {
@@ -2568,7 +2569,7 @@ const QuestionnairePage = () => {
       className: "flex justify-between items-center mb-6",
       children: [/* @__PURE__ */ jsxs("h2", {
         className: "text-lg font-semibold",
-        children: ["Question ", currentIndex + 1, " / ", questions.length]
+        children: ["Questions ", currentIndex + 1, " / ", questions.length]
       }), /* @__PURE__ */ jsxs("div", {
         className: "text-sm font-semibold text-red-600",
         children: ["⏰ ", minutes, ":", seconds < 10 ? "0" : "", seconds]
@@ -2605,7 +2606,7 @@ const QuestionnairePage = () => {
         className: "mt-6 flex justify-end",
         children: /* @__PURE__ */ jsx("button", {
           onClick: handleNext,
-          className: "bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700",
+          className: "bg-[#023047]-600 text-white px-6 py-2 rounded hover:bg-[#023047]-700",
           children: currentIndex === questions.length - 1 ? "Soumettre" : "Suivant"
         })
       })]
@@ -2623,7 +2624,7 @@ const menuItems = [{
   path: "/recruteur/dashboard",
   icon: /* @__PURE__ */ jsx(HomeRoundedIcon, {})
 }, {
-  text: "Talent Matcher",
+  text: "offres",
   path: "/recruteur/talent_matcher",
   icon: /* @__PURE__ */ jsx(PersonRoundedIcon, {})
 }, {
@@ -3142,7 +3143,7 @@ const participants = [{
   progress: 100
 }];
 const DetailOffrePage = () => {
-  var _a, _b;
+  var _a, _b, _c;
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("participants");
   const {
@@ -3175,6 +3176,8 @@ const DetailOffrePage = () => {
       fetchOffer();
     }
   }, [id]);
+  localStorage.setItem("selectedOfferId", offer.id);
+  localStorage.setItem("SelectedOfferCompanyName", ((_a = offer.company) == null ? void 0 : _a.name) || "");
   const handleRowClick = (id2) => {
     navigate(`/recruteur/candidat/${id2}`);
   };
@@ -3184,26 +3187,26 @@ const DetailOffrePage = () => {
       className: "mb-6 bg-white px-4 w-full pt-6 pb-0 border-b border-gray-200",
       children: [/* @__PURE__ */ jsxs("h2", {
         className: "text-xl font-semibold mb-1",
-        children: ["Talent matcher / Détail de l'offre", /* @__PURE__ */ jsx("span", {
+        children: ["offres / Détail de l'offre", /* @__PURE__ */ jsx("span", {
           className: "ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full",
           children: "Active"
         })]
       }), /* @__PURE__ */ jsxs("div", {
         className: "flex items-center space-x-6 pb-2 text-sm text-gray-600 mt-2",
         children: [/* @__PURE__ */ jsxs("button", {
-          className: `relative font-semibold ${activeTab === "participants" ? "text-purple-600" : "text-gray-500"}`,
+          className: `relative font-semibold ${activeTab === "participants" ? "text-[#023047]-600" : "text-gray-500"}`,
           onClick: () => setActiveTab("participants"),
           children: ["Participants", " ", /* @__PURE__ */ jsx("span", {
-            className: "ml-1 text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full",
+            className: "ml-1 text-xs bg-[#023047]-100 text-[#023047]-700 px-2 py-0.5 rounded-full",
             children: participants.length
           }), activeTab === "participants" && /* @__PURE__ */ jsx("div", {
-            className: "absolute -bottom-2 left-0 h-1 w-full bg-purple-600 rounded-t"
+            className: "absolute -bottom-2 left-0 h-1 w-full bg-[#023047]-600 rounded-t"
           })]
         }), /* @__PURE__ */ jsxs("button", {
-          className: `font-semibold ${activeTab === "description" ? "text-purple-600" : "text-gray-500"}`,
+          className: `font-semibold ${activeTab === "description" ? "text-[#023047]-600" : "text-gray-500"}`,
           onClick: () => setActiveTab("description"),
           children: ["Description", activeTab === "description" && /* @__PURE__ */ jsx("div", {
-            className: " -bottom-2 left-0 h-1 w-full bg-purple-600 rounded-t"
+            className: " -bottom-2 left-0 h-1 w-full bg-[#023047]-600 rounded-t"
           })]
         })]
       })]
@@ -3220,14 +3223,14 @@ const DetailOffrePage = () => {
             }), /* @__PURE__ */ jsxs("button", {
               className: "bg-white border border-[#e0e0e0] text-sm px-4 py-2 rounded-lg text-gray-700",
               children: ["Filtres", /* @__PURE__ */ jsx("span", {
-                className: "ml-2 bg-purple-600 text-white px-2 py-0.5 rounded-full text-xs",
+                className: "ml-2 bg-[#023047]-600 text-white px-2 py-0.5 rounded-full text-xs",
                 children: "5"
               })]
             })]
           }), /* @__PURE__ */ jsx("input", {
             type: "text",
             placeholder: "Rechercher un candidat...",
-            className: "border border-[#e0e0e0] bg-white px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-purple-500"
+            className: "border border-[#e0e0e0] bg-white px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-[#023047]-500"
           })]
         }), /* @__PURE__ */ jsx("div", {
           className: "overflow-x-auto",
@@ -3360,7 +3363,7 @@ const DetailOffrePage = () => {
                     className: "mr-1"
                   }), "Fermer l'offre"]
                 }), /* @__PURE__ */ jsxs("button", {
-                  className: " w- 100 ml-2 text-sm  border boder-purple-700  px-2 py-2 rounded-xl",
+                  className: " w- 100 ml-2 text-sm  border boder-[#023047]-700  px-2 py-2 rounded-xl",
                   children: [/* @__PURE__ */ jsx(BorderColorRoundedIcon, {
                     className: "mr-1"
                   }), "Modifier l'offre"]
@@ -3368,7 +3371,7 @@ const DetailOffrePage = () => {
               })]
             }), /* @__PURE__ */ jsxs("p", {
               className: "text-sm text-gray-500 mb-2",
-              children: [(_a = offer.company) == null ? void 0 : _a.name, " · ", offer.location]
+              children: [(_b = offer.company) == null ? void 0 : _b.name, " · ", offer.location]
             }), /* @__PURE__ */ jsx("div", {
               className: "text-gray-700 leading-relaxed text-sm mb-4 whitespace-pre-line",
               children: offer.description
@@ -3437,7 +3440,7 @@ const DetailOffrePage = () => {
                 children: "Compétences requises"
               }), /* @__PURE__ */ jsx("div", {
                 className: "flex flex-wrap gap-3",
-                children: (_b = offer.skills_required) == null ? void 0 : _b.map((skill, index) => /* @__PURE__ */ jsx("span", {
+                children: (_c = offer.skills_required) == null ? void 0 : _c.map((skill, index) => /* @__PURE__ */ jsx("span", {
                   className: "bg-[#fff1cc] text-[#c79202] px-3 py-1 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition",
                   children: skill.name
                 }, skill.id || index))
@@ -3514,7 +3517,7 @@ const talent_matcher = withComponentProps(function TalentMatcherPage() {
         }), /* @__PURE__ */ jsx(Link, {
           to: "/recruteur/ajouter-offre",
           children: /* @__PURE__ */ jsxs("button", {
-            className: "flex items-center bg-white border border-[#4d08a1] text-[#4d08a1] px-4 py-1 rounded-full hover:bg-purple-50 text-sm font-medium",
+            className: "flex items-center bg-white border border-[#4d08a1] text-[#4d08a1] px-4 py-1 rounded-full hover:bg-[#023047]-50 text-sm font-medium",
             children: [/* @__PURE__ */ jsxs("span", {
               className: "mr-2 text-lg",
               children: [" ", /* @__PURE__ */ jsx(AddCircleRoundedIcon, {
@@ -3528,7 +3531,7 @@ const talent_matcher = withComponentProps(function TalentMatcherPage() {
       }), /* @__PURE__ */ jsx("input", {
         type: "text",
         placeholder: "Rechercher un candidat...",
-        className: "border border-[#eeedf0] bg-white px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-purple-500"
+        className: "border border-[#eeedf0] bg-white px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-[#023047]-500"
       })]
     }), /* @__PURE__ */ jsxs("div", {
       className: "overflow-x-auto",
@@ -3571,7 +3574,7 @@ const talent_matcher = withComponentProps(function TalentMatcherPage() {
                 className: "font-semibold",
                 children: offer.title
               }), /* @__PURE__ */ jsx("p", {
-                className: "text-xs text-purple-600",
+                className: "text-xs text-[#023047]-600",
                 children: offer.category
               })]
             }), /* @__PURE__ */ jsx("div", {
@@ -3599,7 +3602,7 @@ const talent_matcher = withComponentProps(function TalentMatcherPage() {
     }), /* @__PURE__ */ jsx("div", {
       className: "mt-6 flex justify-center",
       children: /* @__PURE__ */ jsx("button", {
-        className: "bg-purple-700 hover:bg-purple-800 text-white text-sm font-semibold px-6 py-2 rounded-full",
+        className: "bg-[#023047]-700 hover:bg-[#023047]-800 text-white text-sm font-semibold px-6 py-2 rounded-full",
         children: "Voir plus"
       })
     })]
@@ -3609,7 +3612,7 @@ const route14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   __proto__: null,
   default: talent_matcher
 }, Symbol.toStringTag, { value: "Module" }));
-const models = Array.from({
+const models$1 = Array.from({
   length: 10
 }, (_, i) => ({
   id: i,
@@ -3628,15 +3631,15 @@ const ModelePredictifPage = () => {
       }), /* @__PURE__ */ jsxs("div", {
         className: "flex items-center space-x-6 border-b pb-2 text-sm text-gray-600",
         children: [/* @__PURE__ */ jsxs("button", {
-          className: "relative text-purple-600 font-semibold",
+          className: "relative text-[#023047]-600 font-semibold",
           children: ["Mes modèles ", /* @__PURE__ */ jsx("span", {
-            className: "ml-1 text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full",
+            className: "ml-1 text-xs bg-[#023047] text-[#023047]px-2 py-0.5 rounded-full",
             children: "10"
           }), /* @__PURE__ */ jsx("div", {
-            className: "absolute -bottom-2 left-0 h-1 w-full bg-purple-600 rounded-t"
+            className: "absolute -bottom-2 left-0 h-1 w-full bg-[#023047]-600 rounded-t"
           })]
         }), /* @__PURE__ */ jsxs("button", {
-          className: "text-gray-500 hover:text-purple-500 transition",
+          className: "text-gray-500 hover:text-[#023047]-500 transition",
           children: ["Modèles standards ", /* @__PURE__ */ jsx("span", {
             className: "ml-1 text-xs bg-gray-200 px-2 py-0.5 rounded-full",
             children: "14"
@@ -3648,7 +3651,7 @@ const ModelePredictifPage = () => {
       children: [/* @__PURE__ */ jsxs("div", {
         className: "flex items-center gap-2",
         children: [/* @__PURE__ */ jsx("button", {
-          className: "bg-purple-600 text-white px-4 py-1.5 text-sm rounded-full",
+          className: "bg-['#023047'] text-white px-4 py-1.5 text-sm rounded-full",
           children: "Liste"
         }), /* @__PURE__ */ jsx("button", {
           className: "bg-gray-100 text-gray-600 px-4 py-1.5 text-sm rounded-full",
@@ -3657,7 +3660,7 @@ const ModelePredictifPage = () => {
       }), /* @__PURE__ */ jsxs("div", {
         className: "flex items-center gap-3",
         children: [/* @__PURE__ */ jsxs("button", {
-          className: "flex items-center bg-white border border-purple-500 text-purple-600 px-4 py-2 rounded-lg hover:bg-purple-50 text-sm font-medium",
+          className: "flex items-center bg-white border border-[#023047] text-[#023047] px-4 py-2 rounded-lg hover:bg-[#023047]/10 text-sm font-medium",
           children: [/* @__PURE__ */ jsx("span", {
             className: "mr-2 text-lg",
             children: "＋"
@@ -3665,7 +3668,7 @@ const ModelePredictifPage = () => {
         }), /* @__PURE__ */ jsx("input", {
           type: "text",
           placeholder: "Rechercher une campagne…",
-          className: "border px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-purple-500"
+          className: "border px-4 py-2 rounded-md text-sm w-64 focus:ring-1 focus:ring-[#023047]-500"
         })]
       })]
     }), /* @__PURE__ */ jsx("div", {
@@ -3675,14 +3678,14 @@ const ModelePredictifPage = () => {
       })
     }), /* @__PURE__ */ jsx("div", {
       className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6",
-      children: models.map((model) => /* @__PURE__ */ jsxs("div", {
+      children: models$1.map((model) => /* @__PURE__ */ jsxs("div", {
         className: "bg-white p-4 rounded-lg shadow-sm",
         children: [/* @__PURE__ */ jsxs("div", {
           className: "flex items-center justify-between mb-2",
           children: [/* @__PURE__ */ jsxs("div", {
             className: "flex items-center gap-2",
             children: [/* @__PURE__ */ jsx("div", {
-              className: "bg-purple-100 w-8 h-8 rounded flex items-center justify-center text-purple-600 text-lg",
+              className: "bg-[#023047]-100 w-8 h-8 rounded flex items-center justify-center text-[#023047]-600 text-lg",
               children: "📁"
             }), /* @__PURE__ */ jsxs("div", {
               children: [/* @__PURE__ */ jsx("p", {
@@ -3699,9 +3702,9 @@ const ModelePredictifPage = () => {
           })]
         }), model.groupAction && /* @__PURE__ */ jsx("button", {
           className: "flex items-center gap-2 text-sm text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full mb-3",
-          children: "➕ Ajouter à un groupe"
+          children: "➕ Ajouter à un offre"
         }), /* @__PURE__ */ jsx("button", {
-          className: "w-full text-sm text-purple-600 border border-purple-200 px-4 py-2 rounded-full font-medium hover:bg-purple-50",
+          className: "w-full text-sm text-[#023047]-600 border border-[#023047]-200 px-4 py-2 rounded-full font-medium hover:bg-[#023047]-50",
           children: "📄 Afficher les compétences"
         })]
       }, model.id))
@@ -3776,7 +3779,7 @@ const EvaluationPage = () => {
     }), /* @__PURE__ */ jsx("div", {
       className: "flex flex-wrap gap-3 mb-8",
       children: ["Tous", "Personnalité et profil professionnel", "Intérêts et motivations", "Aptitudes commerciales", "Raisonnement et pensée critique", "Intelligence émotionnelle et gestion du stress", "Connaissances métiers", "MyLab", "Smart interview", "Informatique et Technique"].map((cat) => /* @__PURE__ */ jsx("button", {
-        className: "px-4 py-1 rounded-full text-sm bg-purple-100 text-purple-700",
+        className: "px-4 py-1 rounded-full text-sm bg-[#023047]-100 text-[#023047]-700",
         children: cat
       }, cat))
     }), /* @__PURE__ */ jsxs("div", {
@@ -3788,7 +3791,7 @@ const EvaluationPage = () => {
           children: [/* @__PURE__ */ jsxs("div", {
             className: "flex items-center justify-between mb-2",
             children: [/* @__PURE__ */ jsx("div", {
-              className: "w-10 h-10 bg-purple-100 rounded-md"
+              className: "w-10 h-10 bg-[#023047]-100 rounded-md"
             }), /* @__PURE__ */ jsxs("span", {
               className: "text-sm font-semibold text-gray-700",
               children: [evalItem.credit, " ", /* @__PURE__ */ jsx("span", {
@@ -3863,7 +3866,7 @@ const EvaluationPage = () => {
               className: "toggle toggle-sm"
             })]
           }), /* @__PURE__ */ jsx("button", {
-            className: "w-full text-left text-gray-700 hover:text-purple-600 flex items-center gap-2",
+            className: "w-full text-left text-gray-700 hover:text-[#023047]-600 flex items-center gap-2",
             children: "⚙️ Paramétrer l’envoi"
           }), /* @__PURE__ */ jsx("button", {
             onClick: () => setEvaluations((prev) => prev.map((e) => ({
@@ -3874,7 +3877,7 @@ const EvaluationPage = () => {
             children: "🗑️ Enlever tout"
           })]
         }), /* @__PURE__ */ jsx("button", {
-          className: "mt-6 w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-2 rounded-full text-sm font-semibold shadow hover:from-purple-700 hover:to-purple-800",
+          className: "mt-6 w-full bg-gradient-to-r from-[#023047]-600 to-[#023047]-700 text-white py-2 rounded-full text-sm font-semibold shadow hover:from-[#023047]-700 hover:to-[#023047]-800",
           children: "📤 Envoyer"
         })]
       })]
@@ -3886,13 +3889,210 @@ const route16 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   __proto__: null,
   default: evaluation
 }, Symbol.toStringTag, { value: "Module" }));
+const StepRecrutement = ({ candidat }) => {
+  const [stepStatus, setStepStatus] = useState({
+    avisEquipe: null,
+    mailCandidat: false,
+    avisEvaluateurs: null,
+    mailEntretien: false,
+    decisionFinale: null
+  });
+  const [openSteps, setOpenSteps] = useState({
+    step1: false,
+    step2: false,
+    step3: false,
+    step4: false,
+    step5: false
+  });
+  const toggleStep = (stepKey) => {
+    setOpenSteps((prev) => ({ ...prev, [stepKey]: !prev[stepKey] }));
+  };
+  const handleSelect = (step, decision) => {
+    setStepStatus((prev) => ({ ...prev, [step]: decision }));
+    alert(`Décision enregistrée pour ${step} : ${decision}`);
+  };
+  const sendEmail = async (type) => {
+    localStorage.getItem("selectedOfferId");
+    const entrepriseName = localStorage.getItem("SelectedOfferCompanyName") || "Anonyme";
+    try {
+      const res = await axios.post("http://localhost:5000/send-email", {
+        candidat: {
+          nom: candidat.nom,
+          email: candidat.email,
+          entreprise: candidat.entreprise || entrepriseName,
+          nom_offre: candidat.nom_offre
+        }
+      });
+      if (res.data.success) {
+        alert("📧 Email envoyé avec succès !");
+        setStepStatus((prev) => ({ ...prev, mailCandidat: true }));
+      } else {
+        alert("Erreur lors de l’envoi de l’email.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de l’envoi de l’email.");
+    }
+  };
+  return /* @__PURE__ */ jsxs("div", { className: "bg-white shadow rounded-lg p-4 space-y-4 text-[#023047]", children: [
+    /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold", children: "Étapes du recrutement" }),
+    /* @__PURE__ */ jsxs("div", { children: [
+      /* @__PURE__ */ jsxs(
+        "div",
+        {
+          className: "flex justify-between items-center cursor-pointer",
+          onClick: () => toggleStep("step1"),
+          children: [
+            /* @__PURE__ */ jsx("h3", { className: "font-medium mb-2", children: "1/5 - Avis de l'équipe" }),
+            openSteps.step1 ? /* @__PURE__ */ jsx(ArrowDropUp, {}) : /* @__PURE__ */ jsx(ArrowDropDown, {})
+          ]
+        }
+      ),
+      openSteps.step1 && /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsx(
+          "button",
+          {
+            className: "px-4 py-2 border border-[#023047] rounded bg-white hover:bg-[#023047]/10",
+            onClick: () => handleSelect("avisEquipe", "selectionné"),
+            children: "Sélectionner"
+          }
+        ),
+        /* @__PURE__ */ jsx(
+          "button",
+          {
+            className: "px-4 py-2 border border-red-500 text-red-500 rounded hover:bg-red-50",
+            onClick: () => handleSelect("avisEquipe", "rejeté"),
+            children: "Rejeter"
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxs("div", { children: [
+      /* @__PURE__ */ jsxs(
+        "div",
+        {
+          className: "flex justify-between items-center cursor-pointer",
+          onClick: () => toggleStep("step2"),
+          children: [
+            /* @__PURE__ */ jsx("h3", { className: "font-medium mb-2", children: "2/5 - Notification au candidat" }),
+            openSteps.step2 ? /* @__PURE__ */ jsx(ArrowDropUp, {}) : /* @__PURE__ */ jsx(ArrowDropDown, {})
+          ]
+        }
+      ),
+      openSteps.step2 && /* @__PURE__ */ jsx(
+        "button",
+        {
+          className: "px-4 py-2 bg-[#023047] text-white rounded hover:bg-[#03507f]",
+          onClick: () => {
+            sendEmail();
+            setStepStatus((prev) => ({ ...prev, mailCandidat: true }));
+          },
+          children: "Envoyer l'email de sélection"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxs("div", { children: [
+      /* @__PURE__ */ jsxs(
+        "div",
+        {
+          className: "flex justify-between items-center cursor-pointer",
+          onClick: () => toggleStep("step3"),
+          children: [
+            /* @__PURE__ */ jsx("h3", { className: "font-medium mb-2", children: "3/5 - Avis des évaluateurs" }),
+            openSteps.step3 ? /* @__PURE__ */ jsx(ArrowDropUp, {}) : /* @__PURE__ */ jsx(ArrowDropDown, {})
+          ]
+        }
+      ),
+      openSteps.step3 && /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsx(
+          "button",
+          {
+            className: "px-4 py-2 border border-[#023047] rounded bg-white hover:bg-[#023047]/10",
+            onClick: () => handleSelect("avisEvaluateurs", "selectionné"),
+            children: "Sélectionner"
+          }
+        ),
+        /* @__PURE__ */ jsx(
+          "button",
+          {
+            className: "px-4 py-2 border border-red-500 text-red-500 rounded hover:bg-red-50",
+            onClick: () => handleSelect("avisEvaluateurs", "rejeté"),
+            children: "Rejeter"
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxs("div", { children: [
+      /* @__PURE__ */ jsxs(
+        "div",
+        {
+          className: "flex justify-between items-center cursor-pointer",
+          onClick: () => toggleStep("step4"),
+          children: [
+            /* @__PURE__ */ jsx("h3", { className: "font-medium mb-2", children: "4/5 - Entretien (optionnel)" }),
+            openSteps.step4 ? /* @__PURE__ */ jsx(ArrowDropUp, {}) : /* @__PURE__ */ jsx(ArrowDropDown, {})
+          ]
+        }
+      ),
+      openSteps.step4 && /* @__PURE__ */ jsx(
+        "button",
+        {
+          className: "px-4 py-2 bg-[#023047] text-white rounded hover:bg-[#03507f]",
+          onClick: () => {
+            sendEmail();
+            setStepStatus((prev) => ({ ...prev, mailEntretien: true }));
+          },
+          children: "Envoyer un email pour l'entretien"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxs("div", { children: [
+      /* @__PURE__ */ jsxs(
+        "div",
+        {
+          className: "flex justify-between items-center cursor-pointer",
+          onClick: () => toggleStep("step5"),
+          children: [
+            /* @__PURE__ */ jsx("h3", { className: "font-medium mb-2", children: "5/5 - Recrutement final" }),
+            openSteps.step5 ? /* @__PURE__ */ jsx(ArrowDropUp, {}) : /* @__PURE__ */ jsx(ArrowDropDown, {})
+          ]
+        }
+      ),
+      openSteps.step5 && /* @__PURE__ */ jsxs("div", { className: "flex gap-2", children: [
+        /* @__PURE__ */ jsx(
+          "button",
+          {
+            className: "px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700",
+            onClick: () => {
+              sendEmail();
+              setStepStatus((prev) => ({ ...prev, decisionFinale: "accepté" }));
+            },
+            children: "✅ Accepter"
+          }
+        ),
+        /* @__PURE__ */ jsx(
+          "button",
+          {
+            className: "px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600",
+            onClick: () => {
+              sendEmail();
+              setStepStatus((prev) => ({ ...prev, decisionFinale: "refusé" }));
+            },
+            children: "❌ Refuser"
+          }
+        )
+      ] })
+    ] })
+  ] });
+};
 const CandidateProfilePage = () => {
+  const [openSteps, setOpenSteps] = React__default.useState(false);
   return /* @__PURE__ */ jsxs("div", {
     className: "bg-[#f6f8f9] min-h-screen font-sans  pb-6 pt-0",
     children: [/* @__PURE__ */ jsx(NavbarRecrut, {}), /* @__PURE__ */ jsxs(Link, {
       to: "/",
       className: "text-md font-light mb-1 ml-50 my-4",
-      children: [" ← Talent matcher / detail de l'offre / Profil de Rasoa ", /* @__PURE__ */ jsx("span", {
+      children: [" ← offres / detail de l'offre / Profil de Rasoa ", /* @__PURE__ */ jsx("span", {
         className: "ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full",
         children: "Active"
       })]
@@ -3921,17 +4121,41 @@ const CandidateProfilePage = () => {
         }), /* @__PURE__ */ jsxs("div", {
           className: "flex gap-4",
           children: [/* @__PURE__ */ jsx("button", {
-            className: "bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium",
+            className: "bg-[#023047]-100 text-[#023047]-700 px-4 py-2 rounded-full text-sm font-medium",
             children: "Ajouter dans une campagne"
           }), /* @__PURE__ */ jsx("button", {
-            className: "bg-purple-700 text-white px-4 py-2 rounded-full text-sm font-medium",
-            children: "📩 Inviter"
+            onClick: () => setOpenSteps(!openSteps),
+            className: "bg-[#023047] text-white px-4 py-2 rounded-lg hover:bg-[#03507f]",
+            children: "📋 Étapes de recrutement"
+          }), openSteps && /* @__PURE__ */ jsx("div", {
+            className: "absolute z-40 mt-2 w-[400px] right-0 bg-white border border-gray-200 rounded-lg shadow-lg",
+            children: /* @__PURE__ */ jsxs("div", {
+              className: "p-4",
+              children: [/* @__PURE__ */ jsxs("div", {
+                className: "flex justify-between items-center mb-2",
+                children: [/* @__PURE__ */ jsx("h2", {
+                  className: "text-base font-semibold text-[#023047]",
+                  children: "Suivi du recrutement"
+                }), /* @__PURE__ */ jsx("button", {
+                  onClick: () => setOpenSteps(false),
+                  className: "text-gray-500 hover:text-gray-700 text-sm",
+                  children: "✖"
+                })]
+              }), /* @__PURE__ */ jsx(StepRecrutement, {
+                candidat: {
+                  nom: "Amboara",
+                  email: "amboarampitiavana8@gmail.com",
+                  entreprise: "EduSmart",
+                  nom_offre: "Développeur Full Stack"
+                }
+              })]
+            })
           })]
         })]
       }), /* @__PURE__ */ jsx("div", {
         className: "mt-6 flex gap-6 text-sm text-gray-600 border-b",
         children: ["Aperçu", "Insight", "Résultats", "Évaluation", "Talent map"].map((tab, i) => /* @__PURE__ */ jsx("button", {
-          className: `pb-2 ${i === 0 ? "text-purple-700 font-semibold border-b-2 border-purple-700" : ""}`,
+          className: `pb-2 ${i === 0 ? "text-[#023047]-700 font-semibold border-b-2 border-[#023047]-700" : ""}`,
           children: tab
         }, i))
       })]
@@ -3990,7 +4214,7 @@ const CandidateProfilePage = () => {
           className: "text-md font-semibold",
           children: "Curriculum Vitae"
         }), /* @__PURE__ */ jsxs("button", {
-          className: "flex items-center bg-purple-600 text-white px-4 py-2 rounded-full",
+          className: "flex items-center bg-[#023047]-600 text-white px-4 py-2 rounded-full",
           children: [/* @__PURE__ */ jsx(CloudDownload, {
             className: "mr-2"
           }), " Télécharger"]
@@ -3998,7 +4222,7 @@ const CandidateProfilePage = () => {
       }), /* @__PURE__ */ jsx("div", {
         className: "flex gap-4 text-sm font-medium text-gray-500 border-b mb-4",
         children: ["Tout", "Expériences", "Formations", "Certifications", "Langues"].map((label, i) => /* @__PURE__ */ jsx("button", {
-          className: `pb-2 ${i === 0 ? "text-purple-600 border-b-2 border-purple-600" : ""}`,
+          className: `pb-2 ${i === 0 ? "text-[#023047]-600 border-b-2 border-[#023047]-600" : ""}`,
           children: label
         }, i))
       }), /* @__PURE__ */ jsxs("div", {
@@ -4152,7 +4376,7 @@ const route17 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
 }, Symbol.toStringTag, { value: "Module" }));
 const contractTypes = ["CDI", "CDD", "Stage", "Temporaire", "Prestataire", "Autre"];
 const workModes = ["100% Télétravail", "Télétravail et présentiel", "100% Présentiel"];
-const CreateOfferPage = () => {
+const Step1OfferInfo = ({ data, onChange, onNext }) => {
   const [generateOffer, setGenerateOffer] = useState(true);
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
@@ -4169,18 +4393,612 @@ const CreateOfferPage = () => {
   const [preliminaryQuestions, setPreliminaryQuestions] = useState(false);
   const [skills, setSkills] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
+  useEffect(() => {
+    axios.get("http://localhost:5000/skills", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+        // adapte selon ton auth
+      }
+    }).then((res) => {
+      if (Array.isArray(res.data)) {
+        setSkills(res.data);
+      }
+    }).catch((err) => {
+      console.error("Erreur récupération skills:", err);
+    });
+  }, []);
+  return /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs(Grid, { container: true, spacing: 0, sx: { mt: 6, px: 2, width: "100%", sm: { display: "flex", flexDirection: "column" } }, children: [
+    /* @__PURE__ */ jsx("div", { className: "bg-white rounded-lg shadow-md p-0 ", style: { marginRight: "1px", width: "50%", minWidth: "48%" }, children: /* @__PURE__ */ jsxs(Box$1, { sx: { backgroundColor: "#fff", borderRadius: 2, p: 4 }, children: [
+      /* @__PURE__ */ jsxs(Box$1, { sx: { display: "flex", justifyContent: "space-between", mb: 2 }, children: [
+        /* @__PURE__ */ jsx(Typography, { variant: "h6", children: "Créer une nouvelle offre" }),
+        /* @__PURE__ */ jsx(
+          FormControlLabel,
+          {
+            control: /* @__PURE__ */ jsx(
+              Switch,
+              {
+                checked: generateOffer,
+                onChange: () => setGenerateOffer(!generateOffer),
+                color: "primary"
+              }
+            ),
+            label: "Générer offre"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsx(
+        TextField,
+        {
+          fullWidth: true,
+          label: "Titre du projet",
+          variant: "outlined",
+          size: "small",
+          value: data.title,
+          onChange: (e) => {
+            onChange("title", e.target.value), setTitle(e.target.value);
+          },
+          sx: { mb: 2 },
+          InputProps: {
+            startAdornment: /* @__PURE__ */ jsx(WorkOutline, { sx: { mr: 1 } })
+          }
+        }
+      ),
+      /* @__PURE__ */ jsx(Grid, { xs: 4, children: /* @__PURE__ */ jsx(
+        TextField,
+        {
+          label: "Catégorie",
+          type: "text",
+          fullWidth: true,
+          size: "small",
+          value: data.positions,
+          onChange: (e) => {
+            onChange("positions", e.target.value), setPositions(e.target.value);
+          },
+          InputProps: {
+            startAdornment: /* @__PURE__ */ jsx(People, { sx: { mr: 1 } })
+          }
+        }
+      ) }),
+      /* @__PURE__ */ jsxs(Box$1, { sx: { mb: 2 }, children: [
+        /* @__PURE__ */ jsx(Typography, { variant: "subtitle1", gutterBottom: true, children: "Compétences (skills)" }),
+        /* @__PURE__ */ jsx(
+          Autocomplete,
+          {
+            multiple: true,
+            options: skills,
+            getOptionLabel: (option) => option.name,
+            value: data.selectedSkills,
+            onChange: (event, newValue) => {
+              setSelectedSkills(newValue), onChange("selectedSkills", newValue);
+            },
+            renderTags: (value, getTagProps) => value.map((option, index) => /* @__PURE__ */ jsx(
+              Chip$1,
+              {
+                label: option.name,
+                ...getTagProps({ index }),
+                sx: {
+                  border: "1px solid #4d08a1",
+                  color: "#4d08a1",
+                  backgroundColor: "#f7f1ff"
+                }
+              }
+            )),
+            renderInput: (params) => /* @__PURE__ */ jsx(
+              TextField,
+              {
+                ...params,
+                fullWidth: true,
+                variant: "outlined",
+                size: "small",
+                label: "Skills Tags",
+                InputProps: {
+                  ...params.InputProps,
+                  startAdornment: /* @__PURE__ */ jsxs(Fragment, { children: [
+                    /* @__PURE__ */ jsx(DescriptionIcon, { sx: { mr: 1 } }),
+                    params.InputProps.startAdornment
+                  ] })
+                }
+              }
+            )
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsx(
+        TextField,
+        {
+          fullWidth: true,
+          label: "Description du projet",
+          variant: "outlined",
+          size: "small",
+          multiline: true,
+          rows: 4,
+          value: data.description,
+          onChange: (e) => {
+            onChange("description", e.target.value), setDescription(e.target.value);
+          },
+          sx: { mb: 2 }
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        TextField,
+        {
+          fullWidth: true,
+          label: "Compétences requises",
+          variant: "outlined",
+          size: "small",
+          multiline: true,
+          rows: 4,
+          value: data.competences,
+          onChange: (e) => {
+            onChange("competences", e.target.value), setCompetences(e.target.value);
+          },
+          sx: { mb: 2 }
+        }
+      ),
+      /* @__PURE__ */ jsxs(Box$1, { sx: { mb: 2 }, children: [
+        /* @__PURE__ */ jsx(Typography, { variant: "subtitle1", gutterBottom: true, children: "Télétravail ou présentiel" }),
+        /* @__PURE__ */ jsx(Box$1, { sx: { display: "flex", gap: 1 }, children: workModes.map((mode) => {
+          const isActive = workMode === mode;
+          return /* @__PURE__ */ jsx(
+            Button,
+            {
+              variant: isActive ? "contained" : "outlined",
+              onClick: () => {
+                setWorkMode(mode), onChange("workMode", mode);
+              },
+              sx: {
+                bgcolor: isActive ? "#023047" : "transparent",
+                color: isActive ? "#fff" : "#023047",
+                borderColor: "#023047",
+                "&:hover": {
+                  bgcolor: isActive ? "#3a067e" : "#f3eaff",
+                  // un hover plus doux
+                  borderColor: "#023047",
+                  color: "#023047"
+                }
+              },
+              children: mode
+            },
+            mode
+          );
+        }) })
+      ] }),
+      /* @__PURE__ */ jsxs(Box$1, { sx: { mb: 2 }, children: [
+        /* @__PURE__ */ jsx(Typography, { variant: "subtitle1", gutterBottom: true, children: "Type de contrat" }),
+        /* @__PURE__ */ jsx(Box$1, { sx: { display: "flex", flexWrap: "wrap", gap: 1 }, children: contractTypes.map((type) => {
+          const isActive = contract === type;
+          return /* @__PURE__ */ jsx(
+            Button,
+            {
+              variant: isActive ? "contained" : "outlined",
+              onClick: () => {
+                setContract(type), onChange("contract", type);
+              },
+              sx: {
+                bgcolor: isActive ? "#023047" : "transparent",
+                color: isActive ? "#fff" : "#023047",
+                borderColor: "#023047",
+                "&:hover": {
+                  bgcolor: isActive ? "#3a067e" : "#f3eaff",
+                  borderColor: "#023047",
+                  color: "#023047"
+                }
+              },
+              children: type
+            },
+            type
+          );
+        }) })
+      ] }),
+      /* @__PURE__ */ jsxs(Grid, { container: true, spacing: 2, sx: { mb: 2 }, children: [
+        /* @__PURE__ */ jsx(Grid, { xs: 4, children: /* @__PURE__ */ jsx(
+          TextField,
+          {
+            label: "Salaire min",
+            type: "number",
+            fullWidth: true,
+            size: "small",
+            value: data.salaryFrom,
+            onChange: (e) => {
+              onChange("salaryFrom", e.target.value), setSalaryFrom(e.target.value);
+            },
+            InputProps: {
+              startAdornment: /* @__PURE__ */ jsx(AttachMoney, { sx: { mr: 1 } })
+            }
+          }
+        ) }),
+        /* @__PURE__ */ jsx(Grid, { xs: 4, children: /* @__PURE__ */ jsx(
+          TextField,
+          {
+            label: "Salaire max",
+            type: "number",
+            fullWidth: true,
+            size: "small",
+            value: salaryTo,
+            onChange: (e) => {
+              setSalaryTo(e.target.value), onChange("salaryTo", e.target.value);
+            },
+            InputProps: {
+              startAdornment: /* @__PURE__ */ jsx(AttachMoney, { sx: { mr: 1 } })
+            }
+          }
+        ) })
+      ] }),
+      /* @__PURE__ */ jsxs(Grid, { container: true, spacing: 2, sx: { mb: 2 }, children: [
+        /* @__PURE__ */ jsx(Grid, { xs: 6, children: /* @__PURE__ */ jsxs(
+          TextField,
+          {
+            label: "Pays",
+            select: true,
+            fullWidth: true,
+            size: "small",
+            value: data.country,
+            onChange: (e) => {
+              setCountry(e.target.value), onChange("country", e.target.value);
+            },
+            children: [
+              /* @__PURE__ */ jsx(MenuItem, { value: "France", children: "France" }),
+              /* @__PURE__ */ jsx(MenuItem, { value: "Madagascar", children: "Madagascar" })
+            ]
+          }
+        ) }),
+        /* @__PURE__ */ jsx(Grid, { xs: 6, children: /* @__PURE__ */ jsx(
+          TextField,
+          {
+            label: "Ville",
+            fullWidth: true,
+            size: "small",
+            value: data.location,
+            onChange: (e) => {
+              setLocation(e.target.value), onChange("location", e.target.value);
+            },
+            InputProps: {
+              startAdornment: /* @__PURE__ */ jsx(LocationOn, { sx: { mr: 1 } })
+            }
+          }
+        ) })
+      ] }),
+      /* @__PURE__ */ jsxs(Box$1, { sx: { mb: 2 }, children: [
+        /* @__PURE__ */ jsx(
+          FormControlLabel,
+          {
+            control: /* @__PURE__ */ jsx(
+              Checkbox,
+              {
+                checked: customForm,
+                onChange: () => setCustomForm(!customForm)
+              }
+            ),
+            label: "Personnaliser le formulaire"
+          }
+        ),
+        /* @__PURE__ */ jsx(
+          FormControlLabel,
+          {
+            control: /* @__PURE__ */ jsx(
+              Checkbox,
+              {
+                checked: preliminaryQuestions,
+                onChange: () => setPreliminaryQuestions(!preliminaryQuestions)
+              }
+            ),
+            label: "Questions préliminaires"
+          }
+        )
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsx("div", { className: "bg-white rounded-lg shadow-md p-4 w-1/2 ", style: { marginLeft: "20px", width: "48%", minWidth: "48%", height: "fit-content" }, children: /* @__PURE__ */ jsxs(Box$1, { sx: { backgroundColor: "#fff", borderRadius: 2, p: 4 }, children: [
+      /* @__PURE__ */ jsx(Typography, { variant: "h6", gutterBottom: true, children: "Aperçu" }),
+      /* @__PURE__ */ jsxs(Box$1, { sx: { backgroundColor: "#f0f0f0", borderRadius: 1, p: 2, mb: 2 }, children: [
+        /* @__PURE__ */ jsx(Typography, { variant: "subtitle1", children: title ? title : "Titre du projet" }),
+        /* @__PURE__ */ jsx(Typography, { variant: "caption", color: "textSecondary", children: "Publié le August 7, 2023" })
+      ] }),
+      /* @__PURE__ */ jsxs(Typography, { variant: "body2", color: "textSecondary", children: [
+        /* @__PURE__ */ jsx(LocationOn, { sx: { mr: 1 } }),
+        " ",
+        location,
+        ", ",
+        country
+      ] }),
+      /* @__PURE__ */ jsx(Box$1, { sx: { display: "flex", gap: 1, my: 1, flexWrap: "wrap" }, children: selectedSkills.map((skill, index) => /* @__PURE__ */ jsx(
+        "span",
+        {
+          className: "bg-orange-100 text-orange-700 text-xs px-2 py-0.5 rounded-full",
+          children: skill.name
+        },
+        index
+      )) }),
+      /* @__PURE__ */ jsx(Typography, { variant: "body1", sx: { mb: 2 }, children: description || "Description du projet à venir." }),
+      /* @__PURE__ */ jsxs(Box$1, { children: [
+        /* @__PURE__ */ jsxs(Box$1, { sx: { display: "flex", justifyContent: "space-between", py: 1 }, children: [
+          /* @__PURE__ */ jsx(Typography, { variant: "body2", children: "Télétravail ou présentiel" }),
+          /* @__PURE__ */ jsx(Typography, { variant: "body2", children: workMode })
+        ] }),
+        /* @__PURE__ */ jsxs(Box$1, { sx: { display: "flex", justifyContent: "space-between", py: 1 }, children: [
+          /* @__PURE__ */ jsx(Typography, { variant: "body2", children: "Type de contrat" }),
+          /* @__PURE__ */ jsx(Typography, { variant: "body2", children: contract })
+        ] }),
+        /* @__PURE__ */ jsxs(Box$1, { sx: { display: "flex", justifyContent: "space-between", py: 1 }, children: [
+          /* @__PURE__ */ jsx(Typography, { variant: "body2", children: "Fourchette de salaire" }),
+          /* @__PURE__ */ jsxs(Typography, { variant: "body2", children: [
+            salaryFrom,
+            "€ - ",
+            salaryTo,
+            "€"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxs(Box$1, { sx: { display: "flex", justifyContent: "space-between", py: 1 }, children: [
+          /* @__PURE__ */ jsx(Typography, { variant: "body2", children: "Catégorie" }),
+          /* @__PURE__ */ jsx(Typography, { variant: "body2", children: positions })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxs(Box$1, { sx: { mt: 3 }, children: [
+        /* @__PURE__ */ jsx(Typography, { variant: "subtitle2", gutterBottom: true, children: "Documents requis" }),
+        /* @__PURE__ */ jsx(Box$1, { sx: { display: "flex", gap: 1, flexWrap: "wrap" }, children: ["CV", "Lettre de motivation", "Profil LinkedIn"].map((doc) => /* @__PURE__ */ jsx("span", { className: "bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-xs", children: doc }, doc)) })
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxs(Box$1, { sx: { display: "flex", justifyContent: "space-between", gap: 4, mt: 4, width: "100%", mb: 2 }, children: [
+      /* @__PURE__ */ jsx(Button, { variant: "text", sx: {
+        background: "linear-gradient(264.79deg,rgb(204, 204, 204) 47.52%,rgb(188, 222, 255) 126.2%)",
+        borderRadius: "40px",
+        color: "gray",
+        width: "150px"
+      }, children: "Annuler" }),
+      /* @__PURE__ */ jsx(
+        Button,
+        {
+          variant: "contained",
+          color: "primary",
+          onClick: onNext,
+          sx: {
+            background: "linear-gradient(264.79deg, #023047 47.52%, #206EBB 126.2%)",
+            borderRadius: "40px",
+            width: "150px"
+          },
+          children: "Suivant"
+        }
+      )
+    ] })
+  ] }) });
+};
+const models = [
+  {
+    id: "IA",
+    title: "Modèle IA",
+    description: "Matching basé sur l’intelligence artificielle."
+  },
+  {
+    id: "manuel",
+    title: "Matching manuel",
+    description: "Matching basé sur les préférences manuelles du candidat."
+  }
+];
+const Step2MatchingModel = ({ data, onChange, onNext, onBack }) => {
+  const selectedModel = data == null ? void 0 : data.matchingModel;
+  const handleSelect = (modelId) => {
+    onChange("matchingModel", modelId);
+  };
+  return /* @__PURE__ */ jsxs(Grid$1, { container: true, spacing: 0, sx: { mt: 6, px: 2, width: "100%" }, children: [
+    /* @__PURE__ */ jsx(Typography, { variant: "h6", sx: { mb: 3 }, children: "Choix du modèle de matching" }),
+    /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-6 w-full", children: models.map((model) => {
+      const isSelected = selectedModel === model.id;
+      return /* @__PURE__ */ jsxs(
+        "div",
+        {
+          onClick: () => handleSelect(model.id),
+          className: `cursor-pointer p-4 rounded-lg shadow-sm border transition ${isSelected ? "border-[#023047]-600 bg-[#023047]-50" : "border-gray-200 bg-white"}`,
+          children: [
+            /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3 mb-2", children: [
+              /* @__PURE__ */ jsx("div", { className: "bg-[#023047]-100 w-8 h-8 rounded flex items-center justify-center text-[#023047]-600 text-lg", children: "📁" }),
+              /* @__PURE__ */ jsxs("div", { children: [
+                /* @__PURE__ */ jsx("p", { className: "font-semibold text-sm", children: model.title }),
+                /* @__PURE__ */ jsx("p", { className: "text-xs text-gray-500", children: model.description })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsx("button", { className: "w-full mt-4 text-sm text-[#023047]-600 border border-[#023047]-200 px-4 py-2 rounded-full font-medium hover:bg-[#023047]-100", children: "📄 Afficher les compétences" })
+          ]
+        },
+        model.id
+      );
+    }) }),
+    /* @__PURE__ */ jsxs(Box$1, { sx: { display: "flex", justifyContent: "space-between", gap: 4, mt: 4, width: "100%", mb: 2 }, children: [
+      /* @__PURE__ */ jsx(Button, { variant: "text", sx: {
+        background: "linear-gradient(264.79deg,rgb(204, 204, 204) 47.52%,rgb(188, 222, 255) 126.2%)",
+        borderRadius: "40px",
+        color: "gray",
+        width: "150px"
+      }, onClick: onBack, children: "Retour" }),
+      /* @__PURE__ */ jsx(
+        Button,
+        {
+          variant: "contained",
+          sx: {
+            background: "linear-gradient(264.79deg, #023047 47.52%, #206EBB 126.2%)",
+            borderRadius: "40px",
+            width: "150px",
+            color: "white"
+          },
+          onClick: onNext,
+          disabled: !selectedModel,
+          children: "Suivant"
+        }
+      )
+    ] })
+  ] });
+};
+const roles = [
+  {
+    title: "Évaluateurs en marketing",
+    users: ["AB", "CD"]
+    // Initiales ou images
+  },
+  {
+    title: "Évaluateurs en développement",
+    users: ["EF", "GH", "IJ"]
+  },
+  {
+    title: "Évaluateurs en design",
+    users: ["KL"]
+  },
+  {
+    title: "Évaluateurs en gestion de projet",
+    users: ["MN", "OP"]
+  }
+];
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: (theme.vars ?? theme).palette.text.secondary,
+  ...theme.applyStyles("dark", {
+    backgroundColor: "#1A2027"
+  })
+}));
+const rights = [
+  { label: "Voir le CVS", allowed: true },
+  { label: "Afficher toutes les fiches", allowed: false },
+  { label: "Donner des commentaires", allowed: true },
+  { label: "Gérer les participants", allowed: true },
+  { label: "Gérer le rôle et le modèle prédictif", allowed: true },
+  { label: "Gérer les entretiens", allowed: true },
+  { label: "Supprimer un évaluateur", allowed: true },
+  { label: "Ajouter un évaluateur", allowed: true },
+  { label: "Afficher les rapports d'évaluations", allowed: true }
+];
+const Step3Evaluator = ({ data, onChange, onSubmit, onBack }) => {
+  return /* @__PURE__ */ jsxs(Box$1, { sx: { mt: 6, px: 2 }, children: [
+    /* @__PURE__ */ jsx(Typography, { variant: "h6", sx: { mb: 3 }, children: "Gérer les équipes et les droits" }),
+    /* @__PURE__ */ jsxs(Grid$1, { container: true, spacing: 2, sx: { mb: 4, backgroundColor: "#f6f8f9", p: 2 }, children: [
+      /* @__PURE__ */ jsx(Grid$1, { size: { xs: 12, sm: 6, md: 8 }, children: /* @__PURE__ */ jsx(Grid$1, { container: true, spacing: 2, sx: { mb: 2 }, children: roles.map((role, index) => /* @__PURE__ */ jsx(Grid$1, { size: { xs: 12, sm: 6, md: 4 }, children: /* @__PURE__ */ jsx(Item, { sx: { border: "1px solid #ddd" }, children: /* @__PURE__ */ jsxs(
+        Box$1,
+        {
+          sx: {
+            p: 2,
+            borderRadius: 2,
+            backgroundColor: "#fff",
+            height: "100%"
+          },
+          children: [
+            /* @__PURE__ */ jsx(Typography, { variant: "subtitle1", sx: { mb: 1, borderBottom: "1px solid #ddd", py: 1, fontFamily: "Arial, sans-serif", fontWeight: "bold" }, children: role.title }),
+            /* @__PURE__ */ jsx(Box$1, { sx: { display: "flex", gap: 1, flexWrap: "wrap", mt: 1 }, children: role.users.map((user, i) => /* @__PURE__ */ jsx(
+              Box$1,
+              {
+                sx: {
+                  width: 40,
+                  height: 40,
+                  borderRadius: "50%",
+                  backgroundColor: "#e0e0e0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: "bold"
+                },
+                children: user
+              },
+              i
+            )) })
+          ]
+        }
+      ) }) }, index)) }) }),
+      /* @__PURE__ */ jsx(Grid$1, { item: true, xs: 12, md: 4, children: /* @__PURE__ */ jsxs(
+        Box$1,
+        {
+          sx: {
+            border: "1px solid #ddd",
+            borderRadius: 2,
+            backgroundColor: "#fafafa",
+            p: 2
+          },
+          children: [
+            /* @__PURE__ */ jsx(Typography, { variant: "subtitle1", sx: { mb: 2, fontFamily: "Arial, sans-serif", fontWeight: "bold", borderBottom: "1px solid #ddd", py: 2 }, children: "Droits du groupe" }),
+            /* @__PURE__ */ jsx("ul", { style: { padding: 0, listStyle: "none" }, children: rights.map((right, index) => /* @__PURE__ */ jsxs(
+              "li",
+              {
+                style: {
+                  display: "flex",
+                  justifyContent: "space-between",
+                  backgroundColor: right.allowed === true ? "#f0f0f0" : "#fff",
+                  padding: "8px 12px",
+                  marginBottom: "8px",
+                  borderRadius: "4px"
+                },
+                children: [
+                  /* @__PURE__ */ jsx("span", { children: right.label }),
+                  /* @__PURE__ */ jsx("span", { children: right.allowed ? "✅" : "❌" })
+                ]
+              },
+              index
+            )) })
+          ]
+        }
+      ) })
+    ] }),
+    /* @__PURE__ */ jsxs(Box$1, { sx: { display: "flex", justifyContent: "space-between", gap: 4, mt: 4, width: "100%", mb: 2 }, children: [
+      /* @__PURE__ */ jsx(Button, { variant: "text", sx: {
+        background: "linear-gradient(264.79deg,rgb(204, 204, 204) 47.52%,rgb(188, 222, 255) 126.2%)",
+        borderRadius: "40px",
+        color: "gray",
+        width: "150px"
+      }, onClick: onBack, children: "Retour" }),
+      /* @__PURE__ */ jsx(
+        Button,
+        {
+          variant: "contained",
+          sx: {
+            background: "linear-gradient(264.79deg, #023047 47.52%, #206EBB 126.2%)",
+            borderRadius: "40px",
+            width: "150px",
+            color: "white"
+          },
+          onClick: onSubmit,
+          children: "Suivant"
+        }
+      )
+    ] })
+  ] });
+};
+const CreateOfferPage = () => {
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    competences: "",
+    workMode: "Présentiel",
+    contract: "CDI",
+    salaryFrom: "",
+    salaryTo: "",
+    positions: "",
+    location: "",
+    country: "France",
+    generateOffer: true,
+    selectedSkills: [],
+    matchingModel: null,
+    evaluatorType: null
+  });
+  const [step, setStep] = useState(1);
+  const nextStep = () => setStep((prev) => prev + 1);
+  const prevStep = () => setStep((prev) => prev - 1);
+  const handleChange = (key, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [key]: value
+    }));
+  };
   const handleSubmit = async () => {
     const payload = {
-      title,
-      description,
-      location,
-      statut_offre: generateOffer,
-      category: positions,
-      type_offre: contract,
-      competences_requises: competences,
-      salaire: `${salaryFrom} - ${salaryTo}`,
-      mode_travail: workMode,
-      skills: selectedSkills.map((skill) => skill.id)
+      title: formData.title,
+      description: formData.description,
+      location: `${formData.location} , ${formData.country}`,
+      statut_offre: true,
+      category: formData.positions,
+      type_offre: formData.contract,
+      competences_requises: formData.competences,
+      salaire: `${formData.salaryFrom} - ${formData.salaryTo}`,
+      mode_travail: formData.workMode,
+      generate_offer: formData.generateOffer,
+      matching_model: formData.matchingModel,
+      evaluator_type: formData.evaluatorType,
+      skills: formData.selectedSkills.map((skill) => skill.id)
     };
     const token = localStorage.getItem("token");
     try {
@@ -4203,20 +5021,6 @@ const CreateOfferPage = () => {
       }
     }
   };
-  useEffect(() => {
-    axios.get("http://localhost:5000/skills", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-        // adapte selon ton auth
-      }
-    }).then((res) => {
-      if (Array.isArray(res.data)) {
-        setSkills(res.data);
-      }
-    }).catch((err) => {
-      console.error("Erreur récupération skills:", err);
-    });
-  }, []);
   return /* @__PURE__ */ jsxs(Box$1, {
     sx: {
       backgroundColor: "#f6f8f9",
@@ -4226,467 +5030,25 @@ const CreateOfferPage = () => {
     },
     children: [/* @__PURE__ */ jsx(NavbarRecrut, {}), /* @__PURE__ */ jsxs("h2", {
       className: "text-xl font-semibold mb-1 ml-6 mt-6",
-      children: ["Talent matcher / ajouter un nouvel offre ", /* @__PURE__ */ jsx("span", {
+      children: ["offres / ajouter un nouvel offre ", /* @__PURE__ */ jsx("span", {
         className: "ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full",
         children: "Active"
       })]
-    }), /* @__PURE__ */ jsxs(Grid, {
-      container: true,
-      spacing: 0,
-      sx: {
-        mt: 6,
-        px: 2,
-        width: "100%",
-        sm: {
-          display: "flex",
-          flexDirection: "column"
-        }
-      },
-      children: [/* @__PURE__ */ jsx("div", {
-        className: "bg-white rounded-lg shadow-md p-0 ",
-        style: {
-          marginRight: "1px",
-          width: "50%",
-          minWidth: "48%"
-        },
-        children: /* @__PURE__ */ jsxs(Box$1, {
-          sx: {
-            backgroundColor: "#fff",
-            borderRadius: 2,
-            p: 4
-          },
-          children: [/* @__PURE__ */ jsxs(Box$1, {
-            sx: {
-              display: "flex",
-              justifyContent: "space-between",
-              mb: 2
-            },
-            children: [/* @__PURE__ */ jsx(Typography, {
-              variant: "h6",
-              children: "Créer une nouvelle offre"
-            }), /* @__PURE__ */ jsx(FormControlLabel, {
-              control: /* @__PURE__ */ jsx(Switch, {
-                checked: generateOffer,
-                onChange: () => setGenerateOffer(!generateOffer),
-                color: "primary"
-              }),
-              label: "Générer offre"
-            })]
-          }), /* @__PURE__ */ jsx(TextField, {
-            fullWidth: true,
-            label: "Titre du projet",
-            variant: "outlined",
-            size: "small",
-            value: title,
-            onChange: (e) => setTitle(e.target.value),
-            sx: {
-              mb: 2
-            },
-            InputProps: {
-              startAdornment: /* @__PURE__ */ jsx(WorkOutline, {
-                sx: {
-                  mr: 1
-                }
-              })
-            }
-          }), /* @__PURE__ */ jsx(Grid, {
-            xs: 4,
-            children: /* @__PURE__ */ jsx(TextField, {
-              label: "Catégorie",
-              type: "text",
-              fullWidth: true,
-              size: "small",
-              value: positions,
-              onChange: (e) => setPositions(e.target.value),
-              InputProps: {
-                startAdornment: /* @__PURE__ */ jsx(People, {
-                  sx: {
-                    mr: 1
-                  }
-                })
-              }
-            })
-          }), /* @__PURE__ */ jsxs(Box$1, {
-            sx: {
-              mb: 2
-            },
-            children: [/* @__PURE__ */ jsx(Typography, {
-              variant: "subtitle1",
-              gutterBottom: true,
-              children: "Compétences (skills)"
-            }), /* @__PURE__ */ jsx(Autocomplete, {
-              multiple: true,
-              options: skills,
-              getOptionLabel: (option) => option.name,
-              value: selectedSkills,
-              onChange: (event, newValue) => setSelectedSkills(newValue),
-              renderTags: (value, getTagProps) => value.map((option, index) => /* @__PURE__ */ jsx(Chip$1, {
-                label: option.name,
-                ...getTagProps({
-                  index
-                }),
-                sx: {
-                  border: "1px solid #4d08a1",
-                  color: "#4d08a1",
-                  backgroundColor: "#f7f1ff"
-                }
-              })),
-              renderInput: (params) => /* @__PURE__ */ jsx(TextField, {
-                ...params,
-                fullWidth: true,
-                variant: "outlined",
-                size: "small",
-                label: "Skills Tags",
-                InputProps: {
-                  ...params.InputProps,
-                  startAdornment: /* @__PURE__ */ jsxs(Fragment, {
-                    children: [/* @__PURE__ */ jsx(DescriptionIcon, {
-                      sx: {
-                        mr: 1
-                      }
-                    }), params.InputProps.startAdornment]
-                  })
-                }
-              })
-            })]
-          }), /* @__PURE__ */ jsx(TextField, {
-            fullWidth: true,
-            label: "Description du projet",
-            variant: "outlined",
-            size: "small",
-            multiline: true,
-            rows: 4,
-            value: description,
-            onChange: (e) => setDescription(e.target.value),
-            sx: {
-              mb: 2
-            }
-          }), /* @__PURE__ */ jsx(TextField, {
-            fullWidth: true,
-            label: "Compétences requises",
-            variant: "outlined",
-            size: "small",
-            multiline: true,
-            rows: 4,
-            value: competences,
-            onChange: (e) => setCompetences(e.target.value),
-            sx: {
-              mb: 2
-            }
-          }), /* @__PURE__ */ jsxs(Box$1, {
-            sx: {
-              mb: 2
-            },
-            children: [/* @__PURE__ */ jsx(Typography, {
-              variant: "subtitle1",
-              gutterBottom: true,
-              children: "Télétravail ou présentiel"
-            }), /* @__PURE__ */ jsx(Box$1, {
-              sx: {
-                display: "flex",
-                gap: 1
-              },
-              children: workModes.map((mode) => {
-                const isActive = workMode === mode;
-                return /* @__PURE__ */ jsx(Button, {
-                  variant: isActive ? "contained" : "outlined",
-                  onClick: () => setWorkMode(mode),
-                  sx: {
-                    bgcolor: isActive ? "#6531ad" : "transparent",
-                    color: isActive ? "#fff" : "#6531ad",
-                    borderColor: "#6531ad",
-                    "&:hover": {
-                      bgcolor: isActive ? "#3a067e" : "#f3eaff",
-                      // un hover plus doux
-                      borderColor: "#6531ad",
-                      color: "#6531ad"
-                    }
-                  },
-                  children: mode
-                }, mode);
-              })
-            })]
-          }), /* @__PURE__ */ jsxs(Box$1, {
-            sx: {
-              mb: 2
-            },
-            children: [/* @__PURE__ */ jsx(Typography, {
-              variant: "subtitle1",
-              gutterBottom: true,
-              children: "Type de contrat"
-            }), /* @__PURE__ */ jsx(Box$1, {
-              sx: {
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 1
-              },
-              children: contractTypes.map((type) => {
-                const isActive = contract === type;
-                return /* @__PURE__ */ jsx(Button, {
-                  variant: isActive ? "contained" : "outlined",
-                  onClick: () => setContract(type),
-                  sx: {
-                    bgcolor: isActive ? "#6531ad" : "transparent",
-                    color: isActive ? "#fff" : "#6531ad",
-                    borderColor: "#6531ad",
-                    "&:hover": {
-                      bgcolor: isActive ? "#3a067e" : "#f3eaff",
-                      borderColor: "#6531ad",
-                      color: "#6531ad"
-                    }
-                  },
-                  children: type
-                }, type);
-              })
-            })]
-          }), /* @__PURE__ */ jsxs(Grid, {
-            container: true,
-            spacing: 2,
-            sx: {
-              mb: 2
-            },
-            children: [/* @__PURE__ */ jsx(Grid, {
-              xs: 4,
-              children: /* @__PURE__ */ jsx(TextField, {
-                label: "Salaire min",
-                type: "number",
-                fullWidth: true,
-                size: "small",
-                value: salaryFrom,
-                onChange: (e) => setSalaryFrom(e.target.value),
-                InputProps: {
-                  startAdornment: /* @__PURE__ */ jsx(AttachMoney, {
-                    sx: {
-                      mr: 1
-                    }
-                  })
-                }
-              })
-            }), /* @__PURE__ */ jsx(Grid, {
-              xs: 4,
-              children: /* @__PURE__ */ jsx(TextField, {
-                label: "Salaire max",
-                type: "number",
-                fullWidth: true,
-                size: "small",
-                value: salaryTo,
-                onChange: (e) => setSalaryTo(e.target.value),
-                InputProps: {
-                  startAdornment: /* @__PURE__ */ jsx(AttachMoney, {
-                    sx: {
-                      mr: 1
-                    }
-                  })
-                }
-              })
-            })]
-          }), /* @__PURE__ */ jsxs(Grid, {
-            container: true,
-            spacing: 2,
-            sx: {
-              mb: 2
-            },
-            children: [/* @__PURE__ */ jsx(Grid, {
-              xs: 6,
-              children: /* @__PURE__ */ jsxs(TextField, {
-                label: "Pays",
-                select: true,
-                fullWidth: true,
-                size: "small",
-                value: country,
-                onChange: (e) => setCountry(e.target.value),
-                children: [/* @__PURE__ */ jsx(MenuItem, {
-                  value: "France",
-                  children: "France"
-                }), /* @__PURE__ */ jsx(MenuItem, {
-                  value: "Madagascar",
-                  children: "Madagascar"
-                })]
-              })
-            }), /* @__PURE__ */ jsx(Grid, {
-              xs: 6,
-              children: /* @__PURE__ */ jsx(TextField, {
-                label: "Ville",
-                fullWidth: true,
-                size: "small",
-                value: location,
-                onChange: (e) => setLocation(e.target.value),
-                InputProps: {
-                  startAdornment: /* @__PURE__ */ jsx(LocationOn, {
-                    sx: {
-                      mr: 1
-                    }
-                  })
-                }
-              })
-            })]
-          }), /* @__PURE__ */ jsxs(Box$1, {
-            sx: {
-              mb: 2
-            },
-            children: [/* @__PURE__ */ jsx(FormControlLabel, {
-              control: /* @__PURE__ */ jsx(Checkbox, {
-                checked: customForm,
-                onChange: () => setCustomForm(!customForm)
-              }),
-              label: "Personnaliser le formulaire"
-            }), /* @__PURE__ */ jsx(FormControlLabel, {
-              control: /* @__PURE__ */ jsx(Checkbox, {
-                checked: preliminaryQuestions,
-                onChange: () => setPreliminaryQuestions(!preliminaryQuestions)
-              }),
-              label: "Questions préliminaires"
-            })]
-          }), /* @__PURE__ */ jsxs(Box$1, {
-            sx: {
-              display: "flex",
-              justifyContent: "flex-end",
-              gap: 2
-            },
-            children: [/* @__PURE__ */ jsx(Button, {
-              variant: "text",
-              children: "Annuler"
-            }), /* @__PURE__ */ jsx(Button, {
-              variant: "contained",
-              color: "primary",
-              onClick: handleSubmit,
-              children: "Valider"
-            })]
-          })]
-        })
-      }), /* @__PURE__ */ jsx("div", {
-        className: "bg-white rounded-lg shadow-md p-4 w-1/2 ",
-        style: {
-          marginLeft: "20px",
-          width: "48%",
-          minWidth: "48%",
-          height: "fit-content"
-        },
-        children: /* @__PURE__ */ jsxs(Box$1, {
-          sx: {
-            backgroundColor: "#fff",
-            borderRadius: 2,
-            p: 4
-          },
-          children: [/* @__PURE__ */ jsx(Typography, {
-            variant: "h6",
-            gutterBottom: true,
-            children: "Aperçu"
-          }), /* @__PURE__ */ jsxs(Box$1, {
-            sx: {
-              backgroundColor: "#f0f0f0",
-              borderRadius: 1,
-              p: 2,
-              mb: 2
-            },
-            children: [/* @__PURE__ */ jsx(Typography, {
-              variant: "subtitle1",
-              children: "Développement Informatique"
-            }), /* @__PURE__ */ jsx(Typography, {
-              variant: "caption",
-              color: "textSecondary",
-              children: "Publié le August 7, 2023"
-            })]
-          }), /* @__PURE__ */ jsxs(Typography, {
-            variant: "body2",
-            color: "textSecondary",
-            children: [/* @__PURE__ */ jsx(LocationOn, {
-              sx: {
-                mr: 1
-              }
-            }), " ", location, ", ", country]
-          }), /* @__PURE__ */ jsx(Box$1, {
-            sx: {
-              display: "flex",
-              gap: 1,
-              my: 1,
-              flexWrap: "wrap"
-            },
-            children: selectedSkills.map((skill, index) => /* @__PURE__ */ jsx("span", {
-              className: "bg-orange-100 text-orange-700 text-xs px-2 py-0.5 rounded-full",
-              children: skill.name
-            }, index))
-          }), /* @__PURE__ */ jsx(Typography, {
-            variant: "body1",
-            sx: {
-              mb: 2
-            },
-            children: description || "Description du projet à venir."
-          }), /* @__PURE__ */ jsxs(Box$1, {
-            children: [/* @__PURE__ */ jsxs(Box$1, {
-              sx: {
-                display: "flex",
-                justifyContent: "space-between",
-                py: 1
-              },
-              children: [/* @__PURE__ */ jsx(Typography, {
-                variant: "body2",
-                children: "Télétravail ou présentiel"
-              }), /* @__PURE__ */ jsx(Typography, {
-                variant: "body2",
-                children: workMode
-              })]
-            }), /* @__PURE__ */ jsxs(Box$1, {
-              sx: {
-                display: "flex",
-                justifyContent: "space-between",
-                py: 1
-              },
-              children: [/* @__PURE__ */ jsx(Typography, {
-                variant: "body2",
-                children: "Type de contrat"
-              }), /* @__PURE__ */ jsx(Typography, {
-                variant: "body2",
-                children: contract
-              })]
-            }), /* @__PURE__ */ jsxs(Box$1, {
-              sx: {
-                display: "flex",
-                justifyContent: "space-between",
-                py: 1
-              },
-              children: [/* @__PURE__ */ jsx(Typography, {
-                variant: "body2",
-                children: "Fourchette de salaire"
-              }), /* @__PURE__ */ jsxs(Typography, {
-                variant: "body2",
-                children: [salaryFrom, "€ - ", salaryTo, "€"]
-              })]
-            }), /* @__PURE__ */ jsxs(Box$1, {
-              sx: {
-                display: "flex",
-                justifyContent: "space-between",
-                py: 1
-              },
-              children: [/* @__PURE__ */ jsx(Typography, {
-                variant: "body2",
-                children: "Catégorie"
-              }), /* @__PURE__ */ jsx(Typography, {
-                variant: "body2",
-                children: positions
-              })]
-            })]
-          }), /* @__PURE__ */ jsxs(Box$1, {
-            sx: {
-              mt: 3
-            },
-            children: [/* @__PURE__ */ jsx(Typography, {
-              variant: "subtitle2",
-              gutterBottom: true,
-              children: "Documents requis"
-            }), /* @__PURE__ */ jsx(Box$1, {
-              sx: {
-                display: "flex",
-                gap: 1,
-                flexWrap: "wrap"
-              },
-              children: ["CV", "Lettre de motivation", "Profil LinkedIn"].map((doc) => /* @__PURE__ */ jsx("span", {
-                className: "bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-xs",
-                children: doc
-              }, doc))
-            })]
-          })]
-        })
+    }), /* @__PURE__ */ jsxs("div", {
+      children: [step === 1 && /* @__PURE__ */ jsx(Step1OfferInfo, {
+        data: formData,
+        onChange: handleChange,
+        onNext: nextStep
+      }), step === 2 && /* @__PURE__ */ jsx(Step2MatchingModel, {
+        data: formData,
+        onChange: handleChange,
+        onNext: nextStep,
+        onBack: prevStep
+      }), step === 3 && /* @__PURE__ */ jsx(Step3Evaluator, {
+        data: formData,
+        onChange: handleChange,
+        onSubmit: handleSubmit,
+        onBack: prevStep
       })]
     })]
   });
@@ -4696,7 +5058,7 @@ const route18 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePrope
   __proto__: null,
   default: ajouter_offre
 }, Symbol.toStringTag, { value: "Module" }));
-const serverManifest = { "entry": { "module": "/assets/entry.client-CzQWJRo3.js", "imports": ["/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/index-CNVCymyq.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": true, "module": "/assets/root-D2XS0ib6.js", "imports": ["/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/index-CNVCymyq.js", "/assets/with-props-CxWoRmkF.js"], "css": ["/assets/root-CDnrHn0_.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "routes/home": { "id": "routes/home", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/home-Bno3MDt-.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Typography-Dl5m69Yi.js", "/assets/bg3-Dtz_PR9_.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "auth/sign-in/SignIn": { "id": "auth/sign-in/SignIn", "parentId": "root", "path": "auth/signin", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/SignIn-CQjbIm14.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/signstyle-DeWqp0up.js", "/assets/TextField-Bo1Kcyhs.js", "/assets/VisibilityOff-C9ooRaCa.js", "/assets/IconButton-CDJmrjB7.js", "/assets/FormControlLabel-DmP69yjm.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/Popover-ehDyiyj2.js", "/assets/Menu-CfqzC8Vj.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/isMuiElement-bxpgwgQD.js", "/assets/Typography-Dl5m69Yi.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/CircularProgress-jWFtDqlA.js"], "css": ["/assets/signstyle-D7PGk5L6.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "auth/sign-up/SignUp": { "id": "auth/sign-up/SignUp", "parentId": "root", "path": "auth/signup", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/SignUp-QzLW3hb_.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/signstyle-DeWqp0up.js", "/assets/TextField-Bo1Kcyhs.js", "/assets/VisibilityOff-C9ooRaCa.js", "/assets/IconButton-CDJmrjB7.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/Popover-ehDyiyj2.js", "/assets/Menu-CfqzC8Vj.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/isMuiElement-bxpgwgQD.js", "/assets/Typography-Dl5m69Yi.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/CircularProgress-jWFtDqlA.js"], "css": ["/assets/signstyle-D7PGk5L6.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "auth/sign-up/SignUpRecrut": { "id": "auth/sign-up/SignUpRecrut", "parentId": "root", "path": "auth/recruteur/signup", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/SignUpRecrut-Cduwc5fA.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/signstyle-DeWqp0up.js", "/assets/TextField-Bo1Kcyhs.js", "/assets/VisibilityOff-C9ooRaCa.js", "/assets/IconButton-CDJmrjB7.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/Popover-ehDyiyj2.js", "/assets/Menu-CfqzC8Vj.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/isMuiElement-bxpgwgQD.js", "/assets/Typography-Dl5m69Yi.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/CircularProgress-jWFtDqlA.js"], "css": ["/assets/signstyle-D7PGk5L6.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "auth/forgotmdp/forgotmdp": { "id": "auth/forgotmdp/forgotmdp", "parentId": "root", "path": "auth/forgotmdp", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/forgotmdp-BBAXUgHb.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/signstyle-DeWqp0up.js", "/assets/TextField-Bo1Kcyhs.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/Popover-ehDyiyj2.js", "/assets/Menu-CfqzC8Vj.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/isMuiElement-bxpgwgQD.js"], "css": ["/assets/signstyle-D7PGk5L6.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employe/dashboard": { "id": "employe/dashboard", "parentId": "root", "path": "employe/dashboard", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/dashboard-BLRR5xss.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/RuleRounded-BolkDSnp.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/useTheme-BGXANyoT.js", "/assets/Popover-ehDyiyj2.js", "/assets/Chip-Dsjwbnz0.js", "/assets/IconButton-CDJmrjB7.js", "/assets/Button-BcTfHBKO.js", "/assets/listItemTextClasses-CxOMZ5Ha.js", "/assets/isMuiElement-bxpgwgQD.js", "/assets/Box-B5QIj5Xy.js", "/assets/Stack-DJ672RKg.js", "/assets/Typography-Dl5m69Yi.js", "/assets/Grid-D586BZFi.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/index-CNVCymyq.js", "/assets/CircularProgress-jWFtDqlA.js"], "css": ["/assets/dashboard-C72pszPT.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employe/accueil": { "id": "employe/accueil", "parentId": "root", "path": "employe/accueil", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/accueil-BI1L_XI6.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/bg3-Dtz_PR9_.js", "/assets/navbar-cli-CwZoKeuF.js", "/assets/index-xsH4HHeE.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Stack-DJ672RKg.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/Typography-Dl5m69Yi.js", "/assets/Menu-CfqzC8Vj.js", "/assets/Popover-ehDyiyj2.js", "/assets/MenuItem-DE46lkXZ.js", "/assets/ButtonBase-AlovMshM.js", "/assets/listItemTextClasses-CxOMZ5Ha.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employe/job_detail": { "id": "employe/job_detail", "parentId": "root", "path": "employe/accueil/jobDetail/:id", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/job_detail-BlDtVVh8.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/navbar-cli-CwZoKeuF.js", "/assets/Box-B5QIj5Xy.js", "/assets/Typography-Dl5m69Yi.js", "/assets/Button-BcTfHBKO.js", "/assets/Stack-DJ672RKg.js", "/assets/Grid-D586BZFi.js", "/assets/Popover-ehDyiyj2.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Menu-CfqzC8Vj.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/MenuItem-DE46lkXZ.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/listItemTextClasses-CxOMZ5Ha.js", "/assets/CircularProgress-jWFtDqlA.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/isMuiElement-bxpgwgQD.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employe/profil": { "id": "employe/profil", "parentId": "root", "path": "employe/profil", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/profil-DPwojh6w.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/index-xsH4HHeE.js", "/assets/navbar-cli-CwZoKeuF.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Stack-DJ672RKg.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/Typography-Dl5m69Yi.js", "/assets/Menu-CfqzC8Vj.js", "/assets/Popover-ehDyiyj2.js", "/assets/MenuItem-DE46lkXZ.js", "/assets/ButtonBase-AlovMshM.js", "/assets/listItemTextClasses-CxOMZ5Ha.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employe/postuler/job_test": { "id": "employe/postuler/job_test", "parentId": "root", "path": "employe/test", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/job_test-BsREyNnu.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/dash_recrut": { "id": "employeur/dash_recrut", "parentId": "root", "path": void 0, "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/dash_recrut-B3dnNMXu.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/RuleRounded-BolkDSnp.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Box-B5QIj5Xy.js", "/assets/Stack-DJ672RKg.js", "/assets/Typography-Dl5m69Yi.js", "/assets/Popover-ehDyiyj2.js", "/assets/Menu-CfqzC8Vj.js", "/assets/MenuItem-DE46lkXZ.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/listItemTextClasses-CxOMZ5Ha.js", "/assets/useThemeProps-4GIH6D68.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/dash_content": { "id": "employeur/dash_content", "parentId": "employeur/dash_recrut", "path": "recruteur/dashboard", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/dash_content-ZGCxTeE6.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Box-B5QIj5Xy.js", "/assets/Grid-D586BZFi.js", "/assets/Typography-Dl5m69Yi.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/useTheme-BGXANyoT.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/isMuiElement-bxpgwgQD.js"], "css": ["/assets/dash_content-DGNHAam3.css", "/assets/dashboard-C72pszPT.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/detail_offre": { "id": "employeur/detail_offre", "parentId": "employeur/dash_recrut", "path": "recruteur/detail-de-l-offre/:id", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/detail_offre-pEHzx6Vl.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/Box-B5QIj5Xy.js", "/assets/Typography-Dl5m69Yi.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/talent_matcher": { "id": "employeur/talent_matcher", "parentId": "employeur/dash_recrut", "path": "recruteur/talent_matcher", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/talent_matcher-CkJY5fqy.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/index-xsH4HHeE.js", "/assets/DefaultPropsProvider-D3XoZZZR.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/modele_predictif": { "id": "employeur/modele_predictif", "parentId": "employeur/dash_recrut", "path": "recruteur/modele_predictif", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/modele_predictif-D3PSH2To.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/evaluation": { "id": "employeur/evaluation", "parentId": "employeur/dash_recrut", "path": "recruteur/evaluation", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/evaluation-CUnkco__.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/profil_candidat": { "id": "employeur/profil_candidat", "parentId": "root", "path": "recruteur/candidat/:id", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/profil_candidat-D1Tz1-FH.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/navbar-recrut-B4AKF_fW.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Stack-DJ672RKg.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/Typography-Dl5m69Yi.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/ajouter_offre": { "id": "employeur/ajouter_offre", "parentId": "root", "path": "recruteur/ajouter-offre", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/ajouter_offre-CnLfXvLr.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/navbar-recrut-B4AKF_fW.js", "/assets/index-xsH4HHeE.js", "/assets/Box-B5QIj5Xy.js", "/assets/Grid-D586BZFi.js", "/assets/Typography-Dl5m69Yi.js", "/assets/FormControlLabel-DmP69yjm.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/TextField-Bo1Kcyhs.js", "/assets/Grow-3Z0qnTTb.js", "/assets/ButtonBase-AlovMshM.js", "/assets/Chip-Dsjwbnz0.js", "/assets/Popover-ehDyiyj2.js", "/assets/Stack-DJ672RKg.js", "/assets/IconButton-CDJmrjB7.js", "/assets/Button-BcTfHBKO.js", "/assets/MenuItem-DE46lkXZ.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/useTheme-BGXANyoT.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/isMuiElement-bxpgwgQD.js", "/assets/Menu-CfqzC8Vj.js", "/assets/index-CNVCymyq.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/CircularProgress-jWFtDqlA.js", "/assets/listItemTextClasses-CxOMZ5Ha.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 } }, "url": "/assets/manifest-90807c23.js", "version": "90807c23", "sri": void 0 };
+const serverManifest = { "entry": { "module": "/assets/entry.client-CzQWJRo3.js", "imports": ["/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/index-CNVCymyq.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": true, "module": "/assets/root-Dvq6e97y.js", "imports": ["/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/index-CNVCymyq.js", "/assets/with-props-CxWoRmkF.js"], "css": ["/assets/root-BX48wTel.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "routes/home": { "id": "routes/home", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/home-Bno3MDt-.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Typography-Dl5m69Yi.js", "/assets/bg3-Dtz_PR9_.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "auth/sign-in/SignIn": { "id": "auth/sign-in/SignIn", "parentId": "root", "path": "auth/signin", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/SignIn-BvDJQ81s.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/signstyle-DeWqp0up.js", "/assets/TextField-Bo1Kcyhs.js", "/assets/VisibilityOff-C9ooRaCa.js", "/assets/IconButton-CDJmrjB7.js", "/assets/FormControlLabel-DmP69yjm.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/Popover-ehDyiyj2.js", "/assets/Menu-CfqzC8Vj.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/isMuiElement-bxpgwgQD.js", "/assets/Typography-Dl5m69Yi.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/CircularProgress-jWFtDqlA.js"], "css": ["/assets/signstyle-D7PGk5L6.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "auth/sign-up/SignUp": { "id": "auth/sign-up/SignUp", "parentId": "root", "path": "auth/signup", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/SignUp-QzLW3hb_.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/signstyle-DeWqp0up.js", "/assets/TextField-Bo1Kcyhs.js", "/assets/VisibilityOff-C9ooRaCa.js", "/assets/IconButton-CDJmrjB7.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/Popover-ehDyiyj2.js", "/assets/Menu-CfqzC8Vj.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/isMuiElement-bxpgwgQD.js", "/assets/Typography-Dl5m69Yi.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/CircularProgress-jWFtDqlA.js"], "css": ["/assets/signstyle-D7PGk5L6.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "auth/sign-up/SignUpRecrut": { "id": "auth/sign-up/SignUpRecrut", "parentId": "root", "path": "auth/recruteur/signup", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/SignUpRecrut-Cduwc5fA.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/signstyle-DeWqp0up.js", "/assets/TextField-Bo1Kcyhs.js", "/assets/VisibilityOff-C9ooRaCa.js", "/assets/IconButton-CDJmrjB7.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/Popover-ehDyiyj2.js", "/assets/Menu-CfqzC8Vj.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/isMuiElement-bxpgwgQD.js", "/assets/Typography-Dl5m69Yi.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/CircularProgress-jWFtDqlA.js"], "css": ["/assets/signstyle-D7PGk5L6.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "auth/forgotmdp/forgotmdp": { "id": "auth/forgotmdp/forgotmdp", "parentId": "root", "path": "auth/forgotmdp", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/forgotmdp-BBAXUgHb.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/signstyle-DeWqp0up.js", "/assets/TextField-Bo1Kcyhs.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/Popover-ehDyiyj2.js", "/assets/Menu-CfqzC8Vj.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/isMuiElement-bxpgwgQD.js"], "css": ["/assets/signstyle-D7PGk5L6.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employe/dashboard": { "id": "employe/dashboard", "parentId": "root", "path": "employe/dashboard", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/dashboard-BLRR5xss.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/RuleRounded-BolkDSnp.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/useTheme-BGXANyoT.js", "/assets/Popover-ehDyiyj2.js", "/assets/Chip-Dsjwbnz0.js", "/assets/IconButton-CDJmrjB7.js", "/assets/Button-BcTfHBKO.js", "/assets/listItemTextClasses-CxOMZ5Ha.js", "/assets/isMuiElement-bxpgwgQD.js", "/assets/Box-B5QIj5Xy.js", "/assets/Stack-DJ672RKg.js", "/assets/Typography-Dl5m69Yi.js", "/assets/Grid-D586BZFi.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/index-CNVCymyq.js", "/assets/CircularProgress-jWFtDqlA.js"], "css": ["/assets/dashboard-C72pszPT.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employe/accueil": { "id": "employe/accueil", "parentId": "root", "path": "employe/accueil", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/accueil-BI1L_XI6.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/bg3-Dtz_PR9_.js", "/assets/navbar-cli-CwZoKeuF.js", "/assets/index-xsH4HHeE.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Stack-DJ672RKg.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/Typography-Dl5m69Yi.js", "/assets/Menu-CfqzC8Vj.js", "/assets/Popover-ehDyiyj2.js", "/assets/MenuItem-DE46lkXZ.js", "/assets/ButtonBase-AlovMshM.js", "/assets/listItemTextClasses-CxOMZ5Ha.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employe/job_detail": { "id": "employe/job_detail", "parentId": "root", "path": "employe/accueil/jobDetail/:id", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/job_detail-BlDtVVh8.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/navbar-cli-CwZoKeuF.js", "/assets/Box-B5QIj5Xy.js", "/assets/Typography-Dl5m69Yi.js", "/assets/Button-BcTfHBKO.js", "/assets/Stack-DJ672RKg.js", "/assets/Grid-D586BZFi.js", "/assets/Popover-ehDyiyj2.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Menu-CfqzC8Vj.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/MenuItem-DE46lkXZ.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/listItemTextClasses-CxOMZ5Ha.js", "/assets/CircularProgress-jWFtDqlA.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/isMuiElement-bxpgwgQD.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employe/profil": { "id": "employe/profil", "parentId": "root", "path": "employe/profil", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/profil-DPwojh6w.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/index-xsH4HHeE.js", "/assets/navbar-cli-CwZoKeuF.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Stack-DJ672RKg.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/Typography-Dl5m69Yi.js", "/assets/Menu-CfqzC8Vj.js", "/assets/Popover-ehDyiyj2.js", "/assets/MenuItem-DE46lkXZ.js", "/assets/ButtonBase-AlovMshM.js", "/assets/listItemTextClasses-CxOMZ5Ha.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employe/postuler/job_test": { "id": "employe/postuler/job_test", "parentId": "root", "path": "employe/test", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/job_test-CRwgE4Aa.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/dash_recrut": { "id": "employeur/dash_recrut", "parentId": "root", "path": void 0, "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/dash_recrut-8xBSThpl.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/RuleRounded-BolkDSnp.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Box-B5QIj5Xy.js", "/assets/Stack-DJ672RKg.js", "/assets/Typography-Dl5m69Yi.js", "/assets/Popover-ehDyiyj2.js", "/assets/Menu-CfqzC8Vj.js", "/assets/MenuItem-DE46lkXZ.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/ButtonBase-AlovMshM.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/listItemTextClasses-CxOMZ5Ha.js", "/assets/useThemeProps-4GIH6D68.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/dash_content": { "id": "employeur/dash_content", "parentId": "employeur/dash_recrut", "path": "recruteur/dashboard", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/dash_content-ZGCxTeE6.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Box-B5QIj5Xy.js", "/assets/Grid-D586BZFi.js", "/assets/Typography-Dl5m69Yi.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/useTheme-BGXANyoT.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/isMuiElement-bxpgwgQD.js"], "css": ["/assets/dash_content-DGNHAam3.css", "/assets/dashboard-C72pszPT.css"], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/detail_offre": { "id": "employeur/detail_offre", "parentId": "employeur/dash_recrut", "path": "recruteur/detail-de-l-offre/:id", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/detail_offre-C8ZMOidv.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/Box-B5QIj5Xy.js", "/assets/Typography-Dl5m69Yi.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/talent_matcher": { "id": "employeur/talent_matcher", "parentId": "employeur/dash_recrut", "path": "recruteur/talent_matcher", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/talent_matcher-CVRrGI2Q.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/index-xsH4HHeE.js", "/assets/DefaultPropsProvider-D3XoZZZR.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/modele_predictif": { "id": "employeur/modele_predictif", "parentId": "employeur/dash_recrut", "path": "recruteur/modele_predictif", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/modele_predictif-D0mRr4w5.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/evaluation": { "id": "employeur/evaluation", "parentId": "employeur/dash_recrut", "path": "recruteur/evaluation", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/evaluation-DvhH02zy.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/profil_candidat": { "id": "employeur/profil_candidat", "parentId": "root", "path": "recruteur/candidat/:id", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/profil_candidat-DK89RFzU.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/navbar-recrut-B4AKF_fW.js", "/assets/index-xsH4HHeE.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/Stack-DJ672RKg.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/Grow-3Z0qnTTb.js", "/assets/index-CNVCymyq.js", "/assets/useTheme-BGXANyoT.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/Typography-Dl5m69Yi.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 }, "employeur/ajouter_offre": { "id": "employeur/ajouter_offre", "parentId": "root", "path": "recruteur/ajouter-offre", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasClientMiddleware": false, "hasErrorBoundary": false, "module": "/assets/ajouter_offre-BsQqd-Ek.js", "imports": ["/assets/with-props-CxWoRmkF.js", "/assets/chunk-LSOULM7L-io0bedPh.js", "/assets/navbar-recrut-B4AKF_fW.js", "/assets/createSvgIcon-Czy4a_wd.js", "/assets/index-xsH4HHeE.js", "/assets/Grid-D586BZFi.js", "/assets/Box-B5QIj5Xy.js", "/assets/Typography-Dl5m69Yi.js", "/assets/FormControlLabel-DmP69yjm.js", "/assets/DefaultPropsProvider-D3XoZZZR.js", "/assets/createSimplePaletteValueFilter-Ci2NaAvL.js", "/assets/TextField-Bo1Kcyhs.js", "/assets/Grow-3Z0qnTTb.js", "/assets/ButtonBase-AlovMshM.js", "/assets/Chip-Dsjwbnz0.js", "/assets/Popover-ehDyiyj2.js", "/assets/Stack-DJ672RKg.js", "/assets/IconButton-CDJmrjB7.js", "/assets/Button-BcTfHBKO.js", "/assets/MenuItem-DE46lkXZ.js", "/assets/logo-icon2-3sguuZSz.js", "/assets/useTheme-BGXANyoT.js", "/assets/useThemeProps-4GIH6D68.js", "/assets/isMuiElement-bxpgwgQD.js", "/assets/Menu-CfqzC8Vj.js", "/assets/index-CNVCymyq.js", "/assets/isFocusVisible-B8k4qzLc.js", "/assets/CircularProgress-jWFtDqlA.js", "/assets/listItemTextClasses-CxOMZ5Ha.js"], "css": [], "clientActionModule": void 0, "clientLoaderModule": void 0, "clientMiddlewareModule": void 0, "hydrateFallbackModule": void 0 } }, "url": "/assets/manifest-60ec072d.js", "version": "60ec072d", "sri": void 0 };
 const assetsBuildDirectory = "build\\client";
 const basename = "/";
 const future = { "unstable_middleware": false, "unstable_optimizeDeps": false, "unstable_splitRouteModules": false, "unstable_subResourceIntegrity": false, "unstable_viteEnvironmentApi": false };

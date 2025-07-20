@@ -11,15 +11,22 @@ interface InformationsGeneralesProps {
   removeSkill: (index: number) => void;
   availableSkills: any[];
   experiences: any[];
+  education: any[];
+  newEducation : any;
+ 
+  removeEducation: (index: number) => void;
   removeExperience: (index: number) => void;
   newExp: any;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleEducChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+
   handleSubmit: (e: React.FormEvent) => void;
+  addEducation: (e: React.FormEvent) => void;
 }
 
 const InformationsGenerales: React.FC<InformationsGeneralesProps> = ({
   resumeFile, skills, newSkill, setNewSkill, addSkill, removeSkill, availableSkills,
-  experiences, removeExperience, newExp, handleChange, handleSubmit
+  experiences, removeExperience, newExp, handleChange, handleSubmit, education, newEducation, addEducation, removeEducation,handleEducChange
 }) => {
     const [resume, setResume] = useState<File | null>(null);
     const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +77,7 @@ const InformationsGenerales: React.FC<InformationsGeneralesProps> = ({
         </div>
         <div className="flex gap-2">
           <select value={newSkill} onChange={(e) => setNewSkill(e.target.value)} className="border px-3 py-2 rounded-md w-full">
-            <option value="">-- Select a skill --</option>
+            <option value="">-- Choisir une competence --</option>
             {availableSkills.filter((skill) => !skills.includes(skill.name)).map((skill, idx) => (
               <option key={idx} value={skill.name}>{skill.name}</option>
             ))}
@@ -106,6 +113,33 @@ const InformationsGenerales: React.FC<InformationsGeneralesProps> = ({
             <input name="description" value={newExp.description} onChange={handleChange} placeholder="Description" className="border px-3 py-2 rounded-md" />
           </div>
           <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Ajouter</button>
+        </form>
+      </section>
+       {/* Educations */}
+      <section className="mt-8">
+        <h2 className="text-xl font-semibold mb-2">Educations</h2>
+        <ul className="space-y-2 mb-4">
+          {education.map((educ, index) => (
+            console.log("Educations:", educ),
+            <li key={index} className="p-4 border rounded-md bg-white shadow-sm relative">
+              <button onClick={() => removeEducation(index)} className="absolute top-2 right-2 text-red-500 hover:text-red-700 text-xl">&times;</button>
+              <p className="font-semibold">{educ.formation}</p>
+              <p className="text-gray-600">{educ.ecole}</p>
+              <p className="text-sm text-gray-500">
+                {new Date(educ.deb_date).toLocaleDateString()} - {educ.fin_date ? new Date(educ.fin_date).toLocaleDateString() : "Présent"}
+              </p>
+            </li>
+          ))}
+        </ul>
+        <form onSubmit={addEducation} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
+            <input name='formation' value={newEducation.formation} onChange={handleEducChange} placeholder="Formation / Diplome" className="border px-3 py-2 rounded-md" />
+            <input name="ecole" value={newEducation.ecole} onChange={handleEducChange} placeholder="Ecole" className="border px-3 py-2 rounded-md" />
+            <input name="debdate_educ" value={newEducation.debdate_educ} type="date" onChange={handleEducChange} className="border px-3 py-2 rounded-md" />
+            <input name="findate_educ" value={newEducation.findate_educ} type="date" onChange={handleEducChange} className="border px-3 py-2 rounded-md" />
+            <input name="description_educ" value={newEducation.description_educ} onChange={handleEducChange} placeholder="Description" className="border px-3 py-2 rounded-md" />
+          </div>
+          <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Ajouter votre education</button>
         </form>
       </section>
     </>

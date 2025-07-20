@@ -26,6 +26,10 @@
   border-bottom: 2px solid #023047;
   color: #023047;
 }
+.active {
+  border-bottom: 2px solid #023047;
+  color: #023047;
+}
 
 .time-filter {
   padding: 6px 10px;

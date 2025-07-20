@@ -10,3 +10,4 @@ match_bp = Blueprint('match', __name__)
 def match_and_notify(offer_id):
     result = match_candidates_and_notify(offer_id)
     return jsonify(result), 200
+

@@ -197,13 +197,13 @@ const Step1OfferInfo = ({ data, onChange, onNext }) => {
                         variant={isActive ? 'contained' : 'outlined'}
                         onClick={() =>{ setWorkMode(mode), onChange('workMode', mode)}}
                         sx={{
-                          bgcolor: isActive ? '#6531ad' : 'transparent',
-                          color: isActive ? '#fff' : '#6531ad',
-                          borderColor: '#6531ad',
+                          bgcolor: isActive ? '#023047' : 'transparent',
+                          color: isActive ? '#fff' : '#023047',
+                          borderColor: '#023047',
                           '&:hover': {
                             bgcolor: isActive ? '#3a067e' : '#f3eaff', // un hover plus doux
-                            borderColor: '#6531ad',
-                            color: '#6531ad',
+                            borderColor: '#023047',
+                            color: '#023047',
                           },
                         }}
                       >
@@ -227,13 +227,13 @@ const Step1OfferInfo = ({ data, onChange, onNext }) => {
                         variant={isActive ? 'contained' : 'outlined'}
                         onClick={() => {setContract(type), onChange('contract', type)}}
                         sx={{
-                          bgcolor: isActive ? '#6531ad' : 'transparent',
-                          color: isActive ? '#fff' : '#6531ad',
-                          borderColor: '#6531ad',
+                          bgcolor: isActive ? '#023047' : 'transparent',
+                          color: isActive ? '#fff' : '#023047',
+                          borderColor: '#023047',
                           '&:hover': {
                             bgcolor: isActive ? '#3a067e' : '#f3eaff',
-                            borderColor: '#6531ad',
-                            color: '#6531ad',
+                            borderColor: '#023047',
+                            color: '#023047',
                           },
                         }}
                       >
@@ -325,16 +325,7 @@ const Step1OfferInfo = ({ data, onChange, onNext }) => {
               />
             </Box>
 
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
-              <Button variant="text">Annuler</Button>
-             <Button
-                variant="contained"
-                color="primary"
-                onClick={onNext}
-              >
-                Suivant
-              </Button>
-            </Box>
+           
           </Box>
         </div>
 
@@ -406,6 +397,26 @@ const Step1OfferInfo = ({ data, onChange, onNext }) => {
       </Box>
     </Box>
   </div>
+   <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 4, mt: 4, width: '100%', mb: 2 }}>
+              <Button  variant="text"   sx={{
+                  background: 'linear-gradient(264.79deg,rgb(204, 204, 204) 47.52%,rgb(188, 222, 255) 126.2%)',
+                  borderRadius: '40px',
+                  color: 'gray',
+                  width: '150px',
+                }}>Annuler</Button>
+             <Button
+                variant="contained"
+                color="primary"
+                onClick={onNext}
+                sx={{
+                  background: 'linear-gradient(264.79deg, #023047 47.52%, #206EBB 126.2%)',
+                  borderRadius: '40px',
+                   width: '150px',
+                }}
+              >
+                Suivant
+              </Button>
+            </Box>
       </Grid>
     </div>
   );

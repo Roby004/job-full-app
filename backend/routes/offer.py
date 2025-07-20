@@ -1,5 +1,7 @@
 from datetime import datetime
 from flask import Blueprint, request, jsonify
+from models.application import Application
+from models.etaperecrutement import EtapeRecrutement
 from services import offer as offer_services
 from models.company import Company
 from models.candidat import Candidat
@@ -122,3 +124,31 @@ def match_offer_to_candidate(current_user):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@offer_bp.route('/offer/<int:offer_id>/candidats', methods=['GET'])
+def get_candidates_for_offer(offer_id):
+    applications = Application.query.filter_by(job_offer_id=offer_id).all()
+    result = []
+
+    for app in applications:
+        candidat = app.candidate
+
+        # On récupère les étapes de recrutement liées à cette application
+        etapes = EtapeRecrutement.query.filter_by(candidat_id=candidat.id).first()
+
+        result.append({
+            'id': candidat.id,
+            'fullname': candidat.fullname,
+            'skills': [
+                {
+                    'id': s.skill.id,
+                    'name': s.skill.name
+                } for s in candidat.skills if s.skill is not None
+            ],
+            'status': app.status,
+            'avis_general': etapes.avis_general if etapes else None,
+            'avis_test': etapes.avis_test if etapes else None
+        })
+
+    return jsonify(result)
+

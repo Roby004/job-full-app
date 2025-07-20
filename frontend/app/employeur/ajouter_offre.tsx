@@ -105,7 +105,7 @@ const CreateOfferPage: React.FC = () => {
   return (
       <Box sx={{ backgroundColor: '#f6f8f9', minHeight: '100vh' , marginTop: "0px", fontFamily : 'Open Sans'}}>
         <NavbarRecrut/>
-                        <h2 className="text-xl font-semibold mb-1 ml-6 mt-6">Talent matcher / ajouter un nouvel offre <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span></h2>
+                        <h2 className="text-xl font-semibold mb-1 ml-6 mt-6">offres / ajouter un nouvel offre <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span></h2>
       <div>
       {step === 1 && (
         <Step1OfferInfo
